@@ -43,11 +43,12 @@ namespace AquaShine.ApiHub.Tests.Data.Access
 
         public DataContextTests()
         {
-            var account = CloudStorageAccount.Parse(
-                @"AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;");
+            var connString =
+                @"AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;";
+            var account = CloudStorageAccount.Parse(connString);
             client = account.CreateCloudTableClient();
-            client.GetTableReference("entrants").DeleteIfExists();
-            _context = new DataContext(client);
+            client.GetTableReference("TEST-entrants").DeleteIfExists();
+            _context = new DataContext(client, Microsoft.Azure.Storage.CloudStorageAccount.Parse(connString));
         }
 
         [Fact]
@@ -78,6 +79,17 @@ namespace AquaShine.ApiHub.Tests.Data.Access
         public Task ReadThrowsWhenNegative()
         {
             return Assert.ThrowsAsync<ArgumentNullException>(() => _context.FindById(null));
+        }
+
+        [Fact]
+        public async Task ModelCanBeMerged()
+        {
+            await _context.Create(_entrant);
+            _entrant.Name = "NEW_NAME";
+            var storeEntrant = await _context.MergeWithStore(_entrant);
+            Assert.Equal(_entrant.Name, storeEntrant.Name);
+            var loadedEntrant = await _context.FindById(_entrant.RowKey);
+            Assert.Equal(_entrant.Name, loadedEntrant?.Name);
         }
 
         [Fact]

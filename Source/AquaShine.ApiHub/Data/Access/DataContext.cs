@@ -4,8 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AquaShine.ApiHub.Data.Models;
+using Azure.Storage;
+using Azure.Storage.Blobs;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Cosmos.Table.Queryable;
+using Azure.Storage.Sas;
+using CloudStorageAccount = Microsoft.Azure.Storage.CloudStorageAccount;
 
 namespace AquaShine.ApiHub.Data.Access
 {
@@ -14,17 +18,19 @@ namespace AquaShine.ApiHub.Data.Access
     /// </summary>
     public class DataContext
     {
-        private readonly CloudTable entrantTable;
+        private readonly CloudStorageAccount _storageAccount;
+        private readonly CloudTable _entrantTable;
 
         /// <summary>
         /// Constructs the data context
         /// </summary>
         /// <param name="account"></param>
-        public DataContext(CloudTableClient account)
+        /// <param name="storageAccount"></param>
+        public DataContext(CloudTableClient account, CloudStorageAccount storageAccount)
         {
-            if (account == null) throw new ArgumentNullException(nameof(account));
-            entrantTable = account.GetTableReference("entrants");
-            
+            if(account == null) throw new ArgumentNullException(nameof(account));
+            _storageAccount = storageAccount ?? throw new ArgumentNullException(nameof(storageAccount));
+            _entrantTable = account.GetTableReference("entrants");
         }
 
         /// <summary>
@@ -34,9 +40,9 @@ namespace AquaShine.ApiHub.Data.Access
         /// <returns>A task that completes when the storage has been updated</returns>
         public async Task Create(Entrant entrant)
         {
-            await entrantTable.CreateIfNotExistsAsync().ConfigureAwait(false);
+            await _entrantTable.CreateIfNotExistsAsync().ConfigureAwait(false);
             var operation = TableOperation.Insert(entrant);
-            await entrantTable.ExecuteAsync(operation).ConfigureAwait(false);
+            await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false);
         }
 
 
@@ -48,9 +54,9 @@ namespace AquaShine.ApiHub.Data.Access
         public async Task<Entrant?> FindById(string entrantId)
         {
             if (string.IsNullOrWhiteSpace(entrantId)) throw new ArgumentNullException(nameof(entrantId));
-            if(!await entrantTable.ExistsAsync().ConfigureAwait(false)) throw new DirectoryNotFoundException();
+            if(!await _entrantTable.ExistsAsync().ConfigureAwait(false)) throw new DirectoryNotFoundException();
             var operation = TableOperation.Retrieve<Entrant>("A", entrantId);
-            var opResult = await entrantTable.ExecuteAsync(operation).ConfigureAwait(false);
+            var opResult = await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false);
             return (Entrant?) opResult.Result;
         }
 
@@ -63,7 +69,7 @@ namespace AquaShine.ApiHub.Data.Access
         /// <returns></returns>
         public async Task<IEnumerable<Entrant>> FetchSubmissionOrderedList(int count, int skip, bool? verified)
         {
-            var query = entrantTable.CreateQuery<Entrant>()
+            var query = _entrantTable.CreateQuery<Entrant>()
                 .Where(z => z.Details!.Locked);
             if (verified.HasValue)
             {
@@ -93,7 +99,7 @@ namespace AquaShine.ApiHub.Data.Access
         /// <returns></returns>
         public async Task<IEnumerable<Entrant>> FetchList(int count, int skip, bool? verified = null)
         {
-            var query = entrantTable.CreateQuery<Entrant>().AsQueryable();
+            var query = _entrantTable.CreateQuery<Entrant>().AsQueryable();
 
             if (verified.HasValue)
             {
@@ -147,7 +153,69 @@ namespace AquaShine.ApiHub.Data.Access
             if (entrantEventbriteId == null) throw new ArgumentNullException(nameof(entrantEventbriteId));
 
             // ReSharper disable once ReplaceWithSingleCallToFirstOrDefault
-            return Task.Run(() => entrantTable.CreateQuery<Entrant>().Where(x => x.EventbriteId == entrantEventbriteId).FirstOrDefault())!;
+            return Task.Run(() => _entrantTable.CreateQuery<Entrant>().Where(x => x.EventbriteId == entrantEventbriteId).FirstOrDefault())!;
         }
+
+        /// <summary>
+        /// Merges the entrant with the data on the store, will insert if the entity does not already exist
+        /// </summary>
+        /// <param name="entrant">The entrant to merge</param>
+        /// <returns>The updated representation of the model</returns>
+        public async Task<Entrant> MergeWithStore(Entrant entrant)
+        {
+            var operation = TableOperation.InsertOrMerge(entrant);
+            return (Entrant) (await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false)).Result;
+        }
+
+        /// <summary>
+        /// Generates the URIs that a client can use to upload images to the storage system
+        /// </summary>
+        /// <param name="entrantId">The entrant that is being uploaded</param>
+        /// <param name="generateDisplayUri">Controls the generation of the displayUploadUri</param>
+        /// <param name="verifyContainerName">The name of the blob container for verification images. Default: 'photos-verification'</param>
+        /// <param name="displayContainerName">The name of the blob container for verification images. Default: 'photos-display'</param>
+        /// <returns></returns>
+        public (Uri verifyUploadUri, Uri? displayUploadUri) GenerateImageUploadUris(string entrantId, bool generateDisplayUri, string verifyContainerName = "photos-verification", string displayContainerName = "photos-display")
+        {
+            if (string.IsNullOrWhiteSpace(entrantId)) throw new ArgumentNullException(nameof(entrantId));
+
+            var sasBuilder = new BlobSasBuilder
+            {
+                BlobContainerName = verifyContainerName,
+                BlobName = entrantId,
+                Resource = @"b",
+                ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(5)
+            };
+
+            //Sets the permissions for the SAS token
+            sasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.Write);
+
+            var credentials = new StorageSharedKeyCredential(_storageAccount.Credentials.AccountName,
+                _storageAccount.Credentials.ExportBase64EncodedKey());
+
+            //The constructed sas token
+            var verifyUploadSas = sasBuilder.ToSasQueryParameters(credentials);
+
+            //Uri builder for verify blob
+            var builder = new BlobUriBuilder(_storageAccount.BlobEndpoint)
+            {
+                BlobName = entrantId,
+                BlobContainerName = verifyContainerName,
+                AccountName = _storageAccount.Credentials.AccountName,
+                Sas = verifyUploadSas
+            };
+            var verifyUploadUri = builder.ToUri();
+
+            sasBuilder.BlobContainerName = displayContainerName;
+            builder.BlobContainerName = displayContainerName;
+
+            if (generateDisplayUri)
+            {
+                builder.Sas = sasBuilder.ToSasQueryParameters(credentials);
+                var displayUploadUri = builder.ToUri();
+                return (verifyUploadUri, displayUploadUri);
+            }
+            return (verifyUploadUri, null);
+        } 
     }
 }
