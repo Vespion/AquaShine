@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using AquaShine.ApiHub.Data.Access;
+﻿using AquaShine.ApiHub.Data.Access;
 using AquaShine.ApiHub.Data.Models;
 using AquaShine.ApiHub.Eventbrite.Models;
 using Microsoft.Azure.Cosmos.Table;
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AquaShine.ApiHub.Tests.Data.Access

@@ -1,0 +1,64 @@
+﻿@page "/results"
+@using Sve.Blazor.DataTable.Components
+@using AquaShine.WebSupport
+
+<article>
+    <MatH1>Results</MatH1>
+    <style>
+        .app-fab--absolute {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+        }
+
+        .table-scroll {
+            overflow-x: scroll;
+        }
+    </style>
+
+    <DataTable TModel="Entrant" Items="Items" IsLoading="@Loading" FetchData="DoFetchData" Styles="TableStyle.Hover" UsePaging="true" CssClass="table-scroll">
+        <DataTableColumn IsSortable="true" IsFilterable="true" TModel="Entrant" Property="e => e.Id" CustomTitle="Entrant Number" />
+        <DataTableColumn IsSortable="true" IsFilterable="true" TModel="Entrant" Property="e => e.Submission.DisplayName ?? e.Name ?? MissingNameValue" CustomTitle="Name" />
+        <DataTableColumn IsSortable="true" IsFilterable="true" TModel="Entrant" Property="e => e.Submission.TimeToComplete" CustomTitle="Time taken" />
+        <DataTableColumn IsFilterable="true" TModel="Entrant" Property="e => e.Submission.Verified" CustomTitle="Verified">
+            <RowTemplate Context="entrant">
+                @if (entrant.Submission.Verified)
+                {
+                    <MatIcon Icon="@MatIconNames.Verified_user" />
+                }
+            </RowTemplate>
+        </DataTableColumn>
+    </DataTable>
+
+    <MatFAB Class="app-fab--absolute" Icon="@MatIconNames.Add" Label="Submit your time"></MatFAB>
+</article>
+
+@code{
+    const string MissingNameValue = "(unnamed)";
+    List<Entrant> Items;
+
+    bool Loading = true;
+
+    // Method will be called by the DataTable when necessary
+    private async Task DoFetchData(RequestArgs<Entrant> args)
+    {
+        await Task.Delay(TimeSpan.FromSeconds(1));
+        Items = new List<Entrant>();
+        for (var i = 1; i < 10; i++)
+        {
+            Items.Add(
+                new Entrant
+                {
+                    Id = i,
+                    Name = i.ToString(),
+                    Submission = new Submission
+                    {
+                        TimeToComplete = TimeSpan.FromHours(2.5 + i),
+                        Verified = i % 2 != 0
+                    }
+                });
+        }
+
+        StateHasChanged();
+    }
+}

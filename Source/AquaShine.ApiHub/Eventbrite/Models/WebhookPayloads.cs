@@ -28,7 +28,6 @@ namespace AquaShine.ApiHub.Eventbrite.Models
         {
             if (!(obj is WebhookPayload payload)) return false;
             return Equals(payload);
-
         }
 
         /// <inheritdoc />
@@ -44,9 +43,11 @@ namespace AquaShine.ApiHub.Eventbrite.Models
         }
 
 #pragma warning disable 1591
-        public static bool operator== (WebhookPayload a, WebhookPayload b) => Equals(a, b);
 
-        public static bool operator!= (WebhookPayload a, WebhookPayload b) => !Equals(a, b);
+        public static bool operator ==(WebhookPayload a, WebhookPayload b) => Equals(a, b);
+
+        public static bool operator !=(WebhookPayload a, WebhookPayload b) => !Equals(a, b);
+
 #pragma warning restore 1591
     }
 }

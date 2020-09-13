@@ -1,9 +1,9 @@
-using System;
-using System.IO;
-using System.Text.Json;
 using AquaShine.ApiHub.Eventbrite;
 using AquaShine.ApiHub.Eventbrite.Models;
 using SnowMaker;
+using System;
+using System.IO;
+using System.Text.Json;
 using Xunit;
 
 namespace AquaShine.ApiHub.Tests.Eventbrite
@@ -15,9 +15,10 @@ namespace AquaShine.ApiHub.Tests.Eventbrite
         public const string InvalRowKeyJson = @"{""api_url"":""https://www.eventbriteapi.com/v3/orders/1428494963/""}";
 
         private readonly IUniqueIdGenerator _RowKeyGenerator;
+
         public ApiSerialiserTests()
         {
-            if(File.Exists("./entrantRowKeys.txt")) File.Delete("./entrantRowKeys.txt");
+            if (File.Exists("./entrantRowKeys.txt")) File.Delete("./entrantRowKeys.txt");
             _RowKeyGenerator = new UniqueIdGenerator(new DebugOnlyFileDataStore("./"))
             {
                 BatchSize = 5,
@@ -165,7 +166,5 @@ namespace AquaShine.ApiHub.Tests.Eventbrite
             Assert.NotEqual(entrant5.RowKey, entrant9.RowKey);
             Assert.NotEqual(entrant5.RowKey, entrant10.RowKey);
         }
-
-
     }
 }

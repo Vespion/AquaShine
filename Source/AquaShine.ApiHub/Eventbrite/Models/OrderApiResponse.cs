@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 // ReSharper disable UnusedMember.Global
@@ -61,6 +60,7 @@ namespace AquaShine.ApiHub.Eventbrite.Models
         [JsonPropertyName("attendees")]
 #pragma warning disable CA2227 // Collection properties should be read only. Needs to be settable to be parsed
         public ICollection<Attendee>? Attendees { get; set; }
+
 #pragma warning restore CA2227 // Collection properties should be read only
     }
 }
