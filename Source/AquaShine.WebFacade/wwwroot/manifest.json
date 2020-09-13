@@ -1,0 +1,15 @@
+{
+  "name": "AquaShine.WebFacade",
+  "short_name": "AquaShine.WebFacade",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#189f94",
+  "icons": [
+    {
+      "src": "./img/race-logo/race-logo.webp",
+      "type": "image/webp",
+      "sizes": "2048x1536"
+    }
+  ]
+}

@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AquaShine.ApiHub.Eventbrite;
+using AquaShine.ApiHub.Eventbrite.Models;
+using Microsoft.Extensions.Configuration;
+using Moq;
+using Moq.Contrib.HttpClient;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using AquaShine.ApiHub.Eventbrite;
-using AquaShine.ApiHub.Eventbrite.Models;
-using Microsoft.Extensions.Configuration;
-using Moq;
-using Moq.Contrib.HttpClient;
 using Xunit;
 
 namespace AquaShine.ApiHub.Tests.Eventbrite
 {
-    public class ApiClientTests: IDisposable
+    public class ApiClientTests : IDisposable
     {
         public static readonly WebhookPayload Payload = new WebhookPayload("order.placed", new Uri("https://www.eventbriteapi.com/v3/orders/1428494963/"));
 
@@ -60,7 +59,7 @@ namespace AquaShine.ApiHub.Tests.Eventbrite
             var client = new ApiClient(http, Configuration);
             var order = await client.FetchOrderFromWebhook(Payload.ApiUrl);
 
-            Assert.Equal(JsonSerializer.Serialize(new[] {new Attendee{Id = "1993680763", Profile  = new AttendeeProfile{Email = "jonathon.spice@gmail.com", FirstName = "Jonathon", Gender = "female", LastName = "Spice", Name = "Jonathon Spice", Addresses = new Addresses{Ship = new Address{City = "Sheffield", Address1 = "5 Eastgate", PostalCode = "S61rt", Region = "South Yorkshire", Country = "GB"}}} } }), JsonSerializer.Serialize(order.Attendees));
+            Assert.Equal(JsonSerializer.Serialize(new[] { new Attendee { Id = "1993680763", Profile = new AttendeeProfile { Email = "jonathon.spice@gmail.com", FirstName = "Jonathon", Gender = "female", LastName = "Spice", Name = "Jonathon Spice", Addresses = new Addresses { Ship = new Address { City = "Sheffield", Address1 = "5 Eastgate", PostalCode = "S61rt", Region = "South Yorkshire", Country = "GB" } } } } }), JsonSerializer.Serialize(order.Attendees));
         }
 
         [Fact]

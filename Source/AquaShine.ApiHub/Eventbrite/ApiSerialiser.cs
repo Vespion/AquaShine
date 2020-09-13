@@ -1,9 +1,9 @@
-﻿using System;
-using System.Globalization;
-using System.Text.Json;
-using AquaShine.ApiHub.Data.Models;
+﻿using AquaShine.ApiHub.Data.Models;
 using AquaShine.ApiHub.Eventbrite.Models;
 using SnowMaker;
+using System;
+using System.Globalization;
+using System.Text.Json;
 
 namespace AquaShine.ApiHub.Eventbrite
 {
@@ -29,6 +29,7 @@ namespace AquaShine.ApiHub.Eventbrite
         /// <param name="webhook">A string containing the webhook JSON</param>
         /// <returns></returns>
 #pragma warning disable CA1822 // Mark members as static
+
         public WebhookPayload DeserialiseWebhookPayload(string webhook)
 #pragma warning restore CA1822 // Mark members as static
         {

@@ -1,53 +1,12 @@
-﻿using System;
+﻿using AquaShine.ApiHub.Eventbrite.Models;
+using Microsoft.Azure.Cosmos.Table;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Json;
-using AquaShine.ApiHub.Eventbrite.Models;
-using Microsoft.Azure.Cosmos.Table;
 
 namespace AquaShine.ApiHub.Data.Models
 {
-    /// <summary>
-    /// An entrants submission into the virtual run
-    /// </summary>
-    public class Submission
-    {
-        /// <summary>
-        /// The read only URL to the image used for verification purposes
-        /// </summary>
-        public Uri? VerifyingImgUrl { get; set; }
-
-        /// <summary>
-        /// The read only URL to the image used for display
-        /// </summary>
-        public Uri? DisplayImgUrl { get; set; }
-        
-        /// <summary>
-        /// The time it took for a entrant to complete the challenge
-        /// </summary>
-        public TimeSpan? TimeToComplete { get; set; }
-        
-        /// <summary>
-        /// Has the submission been verified by an admin
-        /// </summary>
-        public bool Verified { get; set; }
-        
-        /// <summary>
-        /// The submission is complete and can no longer be modified
-        /// </summary>
-        public bool Locked { get; set; }
-        
-        /// <summary>
-        /// Is the submission publicly shown?
-        /// </summary>
-        public bool Show { get; set; }
-
-        /// <summary>
-        /// Use a display name instead of the entrants name
-        /// </summary>
-        public string? DisplayName { get; set; }
-    }
-    
     /// <summary>
     /// An entrant in the virtual run
     /// </summary>
@@ -57,8 +16,7 @@ namespace AquaShine.ApiHub.Data.Models
         ///// Id used for searching
         ///// </summary>
         //public long Id { get => long.Parse(RowKey, new NumberFormatInfo()); set => RowKey = value.ToString("X", new NumberFormatInfo()); }
-        
-        
+
         /// <summary>
         /// Id of the order. If order is refunded this user is deleted
         /// </summary>
@@ -89,7 +47,6 @@ namespace AquaShine.ApiHub.Data.Models
         /// </summary>
         public Gender BioGender { get; set; }
 
-
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Framework method, parameters will not be null")]
         public void ReadEntity(IDictionary<string, EntityProperty> properties, OperationContext operationContext)
@@ -99,18 +56,18 @@ namespace AquaShine.ApiHub.Data.Models
             EventbriteId = properties[nameof(EventbriteId)].StringValue;
             Name = properties[nameof(Name)].StringValue;
 
-            Details.TimeToComplete = properties.ContainsKey(nameof(Details.TimeToComplete)) ? 
-                TimeSpan.Parse(properties[nameof(Details.TimeToComplete)].StringValue, new NumberFormatInfo()) : 
+            Details.TimeToComplete = properties.ContainsKey(nameof(Details.TimeToComplete)) ?
+                TimeSpan.Parse(properties[nameof(Details.TimeToComplete)].StringValue, new NumberFormatInfo()) :
                 (TimeSpan?)null;
 
             Details.Verified = properties.ContainsKey(nameof(Details.Verified)) && properties[nameof(Details.Verified)].BooleanValue.GetValueOrDefault(false);
             Details.Show = properties.ContainsKey(nameof(Details.Show)) && properties[nameof(Details.Show)].BooleanValue.GetValueOrDefault(false);
             Details.Locked = properties.ContainsKey(nameof(Details.Locked)) && properties[nameof(Details.Locked)].BooleanValue.GetValueOrDefault(false);
 
-            Details.DisplayImgUrl = properties.ContainsKey(nameof(Details.DisplayImgUrl)) ? new Uri(properties[nameof(Details.DisplayImgUrl)].StringValue) : (Uri?) null;
-            Details.VerifyingImgUrl = properties.ContainsKey(nameof(Details.VerifyingImgUrl)) ? new Uri(properties[nameof(Details.VerifyingImgUrl)].StringValue) : (Uri?) null;
+            Details.DisplayImgUrl = properties.ContainsKey(nameof(Details.DisplayImgUrl)) ? new Uri(properties[nameof(Details.DisplayImgUrl)].StringValue) : (Uri?)null;
+            Details.VerifyingImgUrl = properties.ContainsKey(nameof(Details.VerifyingImgUrl)) ? new Uri(properties[nameof(Details.VerifyingImgUrl)].StringValue) : (Uri?)null;
             Details.DisplayName = properties.ContainsKey(nameof(Details.DisplayName)) ? properties[nameof(Details.DisplayName)].StringValue : null;
-            
+
             Email = properties[nameof(Email)].StringValue;
             Address = JsonSerializer.Deserialize<Address>(properties[nameof(Address)].StringValue);
             BioGender = Enum.Parse<Gender>(properties[nameof(BioGender)].StringValue);
@@ -148,24 +105,5 @@ namespace AquaShine.ApiHub.Data.Models
 
         /// <inheritdoc />
         public string? ETag { get; set; }
-    }
-
-    /// <summary>
-    /// Accepted gender values
-    /// </summary>
-    public enum Gender
-    {
-        /// <summary>
-        /// Other
-        /// </summary>
-        Other,
-        /// <summary>
-        /// Male
-        /// </summary>
-        Male,
-        /// <summary>
-        /// Female
-        /// </summary>
-        Female
     }
 }

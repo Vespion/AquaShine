@@ -1,0 +1,22 @@
+<MatThemeProvider Theme="@_theme">
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</MatThemeProvider>
+
+@code
+{
+    readonly MatTheme _theme = new MatTheme
+    {
+        Primary = "#189f94",
+        OnPrimary = "#fff",
+        OnSecondary = "#189f94",
+    };
+}

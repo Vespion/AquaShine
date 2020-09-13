@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AquaShine.ApiHub.Eventbrite.Models;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AquaShine.ApiHub.Eventbrite.Models;
-using Microsoft.Extensions.Configuration;
 
 namespace AquaShine.ApiHub.Eventbrite
 {

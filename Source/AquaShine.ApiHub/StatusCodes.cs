@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 [assembly: InternalsVisibleTo("AquaShine.ApiHub.Tests")]
+
 namespace AquaShine.ApiHub
 {
     /// <summary>
@@ -15,6 +14,7 @@ namespace AquaShine.ApiHub
         /// A property required for deserialization was missing from the JSON object.
         /// </summary>
         public static readonly EventId MissingJsonProperty = new EventId(1, "A property required for deserialization was missing from the JSON object.");
+
         /// <summary>
         /// Invalid argument supplied.
         /// </summary>
@@ -41,7 +41,7 @@ namespace AquaShine.ApiHub
         /// A message describing this event
         /// </summary>
         public string Message { get; }
-        
+
         /// <inheritdoc />
         public override string ToString()
         {
@@ -53,6 +53,7 @@ namespace AquaShine.ApiHub
         {
             return Number == other.Number && Message == other.Message;
         }
+
         /// <inheritdoc />
         public override int GetHashCode()
         {
@@ -67,6 +68,7 @@ namespace AquaShine.ApiHub
         }
 
 #pragma warning disable 1591
+
         public static bool operator ==(EventId left, EventId right)
         {
             return left.Equals(right);
@@ -76,6 +78,7 @@ namespace AquaShine.ApiHub
         {
             return !(left == right);
         }
+
 #pragma warning restore 1591
     }
 }

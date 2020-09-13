@@ -1,14 +1,14 @@
-﻿using System;
+﻿using AquaShine.ApiHub.Data.Models;
+using Azure.Storage;
+using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
+using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Azure.Cosmos.Table.Queryable;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using AquaShine.ApiHub.Data.Models;
-using Azure.Storage;
-using Azure.Storage.Blobs;
-using Microsoft.Azure.Cosmos.Table;
-using Microsoft.Azure.Cosmos.Table.Queryable;
-using Azure.Storage.Sas;
 using CloudStorageAccount = Microsoft.Azure.Storage.CloudStorageAccount;
 
 namespace AquaShine.ApiHub.Data.Access
@@ -28,7 +28,7 @@ namespace AquaShine.ApiHub.Data.Access
         /// <param name="storageAccount"></param>
         public DataContext(CloudTableClient account, CloudStorageAccount storageAccount)
         {
-            if(account == null) throw new ArgumentNullException(nameof(account));
+            if (account == null) throw new ArgumentNullException(nameof(account));
             _storageAccount = storageAccount ?? throw new ArgumentNullException(nameof(storageAccount));
             _entrantTable = account.GetTableReference("entrants");
         }
@@ -45,7 +45,6 @@ namespace AquaShine.ApiHub.Data.Access
             await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false);
         }
 
-
         /// <summary>
         /// Find an entrant by their row key
         /// </summary>
@@ -54,10 +53,10 @@ namespace AquaShine.ApiHub.Data.Access
         public async Task<Entrant?> FindById(string entrantId)
         {
             if (string.IsNullOrWhiteSpace(entrantId)) throw new ArgumentNullException(nameof(entrantId));
-            if(!await _entrantTable.ExistsAsync().ConfigureAwait(false)) throw new DirectoryNotFoundException();
+            if (!await _entrantTable.ExistsAsync().ConfigureAwait(false)) throw new DirectoryNotFoundException();
             var operation = TableOperation.Retrieve<Entrant>("A", entrantId);
             var opResult = await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false);
-            return (Entrant?) opResult.Result;
+            return (Entrant?)opResult.Result;
         }
 
         /// <summary>
@@ -83,8 +82,7 @@ namespace AquaShine.ApiHub.Data.Access
             {
                 querySegment = await query.AsTableQuery()
                         .ExecuteSegmentedAsync(querySegment?.ContinuationToken).ConfigureAwait(false);
-                    returnList.AddRange(querySegment);
-
+                returnList.AddRange(querySegment);
             }
 
             return returnList.OrderBy(o => o.Details!.TimeToComplete).Skip(skip).Take(count);
@@ -164,7 +162,7 @@ namespace AquaShine.ApiHub.Data.Access
         public async Task<Entrant> MergeWithStore(Entrant entrant)
         {
             var operation = TableOperation.InsertOrMerge(entrant);
-            return (Entrant) (await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false)).Result;
+            return (Entrant)(await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false)).Result;
         }
 
         /// <summary>
@@ -216,6 +214,6 @@ namespace AquaShine.ApiHub.Data.Access
                 return (verifyUploadUri, displayUploadUri);
             }
             return (verifyUploadUri, null);
-        } 
+        }
     }
 }
