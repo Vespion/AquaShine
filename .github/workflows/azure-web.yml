@@ -1,0 +1,28 @@
+name: Deploy website
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup dotnet CLI
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x' # SDK Version to use; x will use the latest version of the 3.1 channel
+      
+    - name: Build website
+      run: |
+        dotnet publish -c Release Source/AquaShine.WebFacade/AquaShine.WebFacade.csproj
+        
+    - name: Deploy to Azure
+      uses: TravisSpomer/deploy-to-azure-storage@v1.1
+      with:
+        source-path: Source\AquaShine.WebFacade\bin\Release\netstandard2.1\publish\wwwroot
+        sas-url: ${{ secrets.DEPLOY_WEB_SAS_URL }}
