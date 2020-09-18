@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -7,11 +8,15 @@ using AquaShine.ApiHub.Data.Access;
 using AquaShine.ApiHub.Data.Models;
 using AquaShine.ApiHub.Eventbrite;
 using AquaShine.ApiHub.Eventbrite.Models;
+using AquaShine.Emails.Client;
+using AquaShine.Emails.Templates;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using MimeKit;
 using Newtonsoft.Json;
 
 namespace AquaShine.ApiFacade.Surface
@@ -21,14 +26,16 @@ namespace AquaShine.ApiFacade.Surface
         private readonly ApiSerialiser _apiSerialiser;
         private readonly ApiClient _apiClient;
         private readonly IDataContext _dataContext;
-        private readonly SmtpClient _smtpClient;
+        private readonly IMailClient _smtpClient;
+        private readonly IOptions<EmailConfig> _emailOptions;
 
-        public Webhook(ApiSerialiser apiSerialiser, ApiClient apiClient, IDataContext dataContext, SmtpClient smtpClient)
+        public Webhook(ApiSerialiser apiSerialiser, ApiClient apiClient, IDataContext dataContext, IMailClient smtpClient, IOptions<EmailConfig> emailOptions)
         {
             _apiSerialiser = apiSerialiser;
             _apiClient = apiClient;
             _dataContext = dataContext;
             _smtpClient = smtpClient;
+            _emailOptions = emailOptions;
         }
 
         [FunctionName("Webhook")]
@@ -64,23 +71,23 @@ namespace AquaShine.ApiFacade.Surface
         private async Task<IActionResult> OrderPlaced(WebhookPayload payload)
         {
             var order = await _apiClient.FetchOrderFromWebhook(payload.ApiUrl).ConfigureAwait(false);
-            var mailTasks = new List<Task>(order.Attendees!.Count);
             foreach (var orderAttendee in order.Attendees!)
             {
                 var entrant = _apiSerialiser.ConvertEntrant(orderAttendee);
-                var dbTask = _dataContext.Create(entrant).ConfigureAwait(false);
-                mailTasks.Add(_smtpClient.SendMailAsync(await GenerateMailMessage(entrant)));
-                await dbTask;
+                await _dataContext.Create(entrant).ConfigureAwait(false);
+                await _smtpClient.SendMessage(GenerateMailMessage(entrant),
+                    new MailboxAddress(_emailOptions.Value.FromName, _emailOptions.Value.FromAddress),
+                    new MailboxAddress(entrant.Name, entrant.Email));
             }
-
-            await Task.WhenAll(mailTasks);
-
             return new StatusCodeResult(StatusCodes.Status201Created);
         }
 
-        private async Task<MailMessage> GenerateMailMessage(Entrant entrant)
+        private static IEmailMessage GenerateMailMessage(Entrant entrant)
         {
-            throw new NotImplementedException();
+            var msg = new EntrantCreated {Subject = "Thanks for joining! Here's your number"};
+            msg.EmailVariables.FirstName = entrant.Name;
+            msg.EmailVariables.EntrantNum = long.Parse(entrant.RowKey, NumberStyles.HexNumber, new NumberFormatInfo());
+            return msg;
         }
     }
 }

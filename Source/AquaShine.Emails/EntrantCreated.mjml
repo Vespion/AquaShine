@@ -1,0 +1,84 @@
+<mjml>
+  <mj-head>
+    <mj-title>Thanks for joining!</mj-title>
+    <mj-preview>Thanks for joining! Here's your entry number.</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif"/>
+      <mj-text font-weight="400" font-size="16px" color="#000000"
+               line-height="24px" font-family="Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif"/>
+    </mj-attributes>
+
+  </mj-head>
+  
+  <mj-body background-color="#189F94" width="600px">
+    <mj-section full-width="full-width" background-color="#007066" padding-bottom="0">
+      <mj-column width="100%">
+        <mj-image src="https://aquashine.z33.web.core.windows.net/img/race-logo/race-logo.png" width="600px" alt="" padding="0" href="https://google.com" />
+      </mj-column>
+    </mj-section>
+    <mj-wrapper padding-top="0" padding-bottom="0">
+      <mj-section background-color="#ffffff" padding-left="15px" padding-right="15px">
+        <mj-column width="100%">
+          <mj-text color="#212b35" font-weight="bold" font-size="20px">
+            Thanks for joining in!
+          </mj-text>
+          <mj-text color="#637381" font-size="16px">
+            Hi {{Model.FirstName}},
+          </mj-text>
+          <mj-text color="#637381" font-size="16px">
+            Thanks for joining in with our event! <br/>
+            Your entry number is:
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section background-color="#ffffff">
+        <mj-column width="100%">
+          <mj-text color="#5bd1c4" font-size="32px" align="center">
+            {{Model.EntrantNum}}
+          </mj-text>
+        </mj-column>
+       </mj-section>
+      <mj-section background-color="#ffffff" padding-left="15px" padding-right="15px">
+        <mj-column width="100%">
+          <mj-text color="#637381" font-size="16px">
+            This number is unique to you so keep it safe and don't share it with anyone! When you're ready to submit your time head on over to our <a href="https://aquashine.z33.web.core.windows.net/results">website</a> and press the button on our results page.
+          </mj-text>
+          <mj-text color="#212b35" font-weight="bold" font-size="20px">
+            Good luck and have fun!
+          </mj-text>
+          <mj-text color="#637381" font-size="16px">
+            - The SHSUSAC Committee
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+
+    <mj-wrapper full-width="full-width">
+      <mj-section>
+        <mj-column width="100%" padding="0">
+          <mj-social font-size="15px" icon-size="30px" mode="horizontal" padding="0" align="center">
+            <mj-social-element name="facebook-noshare" href="https://www.facebook.com/shsusac9214/" background-color="#A1A0A0">
+            </mj-social-element>
+          </mj-social>
+          <mj-text color="#445566" font-size="11px" align="center" line-height="16px">
+            You are receiving this email because you registered with the SUSUSAC virtual 10k. When the event is over any data on you including your email address will be destroyed within 90 days. See our privacy policy for more details.
+          </mj-text>
+          <mj-text color="#445566" font-size="11px" align="center" line-height="16px">
+            &copy; SUSUSAC, Vespion Softworks. All Rights Reserved.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section padding-top="0">
+        <mj-group>
+          <mj-column width="100%" padding-right="0">
+            <mj-text color="#445566" font-size="11px" align="center" line-height="16px" font-weight="bold">
+              <a class="footer-link" href="https://aquashine.z33.web.core.windows.net/policy/privacy">Privacy</a>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;
+            </mj-text>
+          </mj-column>
+        </mj-group>
+
+      </mj-section>
+    </mj-wrapper>
+
+  </mj-body>
+</mjml>
