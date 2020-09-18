@@ -6,6 +6,7 @@
 @inject IHttpClientFactory ClientFactory
 @inject IMatToaster Toaster
 @inject IIndicatorService IndicatorService
+@inject NavigationManager NavigationManager
 
 <article class="mat-layout-grid">
     <MatH1>Results</MatH1>
@@ -14,10 +15,6 @@
             position: fixed;
             bottom: 1rem;
             right: 1rem;
-        }
-
-        .table-scroll {
-            overflow-x: scroll;
         }
     </style>
     <Indicator IndicatorContext="DataTable">
@@ -34,7 +31,7 @@
                         <th>Time to complete</th>
                         <th>Verified</th>
                         @*<th>Gender</th>
-                        <th>Image</th>*@
+                            <th>Image</th>*@
                         <!--</MatSortHeaderRow>-->
                     </MatTableHeader>
                     <MatTableRow>
@@ -49,14 +46,14 @@
                             }
                         </td>
                         @*<td>
-                            <GenderImage Gender="context.BioGender" />
-                        </td>
-                        <td>
-                            @if (context.Submission.DisplayImgUrl != null)
-                            {
-                                <img height="100" src="@context.Submission.DisplayImgUrl" alt="An uploaded image by the entrant." />
-                            }
-                        </td>*@
+                                <GenderImage Gender="context.BioGender" />
+                            </td>
+                            <td>
+                                @if (context.Submission.DisplayImgUrl != null)
+                                {
+                                    <img height="100" src="@context.Submission.DisplayImgUrl" alt="An uploaded image by the entrant." />
+                                }
+                            </td>*@
                     </MatTableRow>
                 </MatTable>
             </section>
@@ -102,7 +99,6 @@
             }
             <nav class="mat-layout-grid-cell-span-6">
                 <MatPaginator Length="@totalLength" PageSize="5" Page="@OnPage"></MatPaginator>
-
             </nav>
             <MatFAB Class="app-fab--absolute" Icon="@MatIconNames.Add" Label="Submit your time" OnClick="Callback"></MatFAB>
         </div>
@@ -110,6 +106,7 @@
 </article>
 
 @code{
+   
     readonly List<Entrant> Items = new List<Entrant>();
     HttpClient _client;
 
@@ -169,7 +166,7 @@
 
     private void Callback(MouseEventArgs obj)
     {
-        Toaster.Add("Not yet implemented", MatToastType.Danger, "Error");
+        NavigationManager.NavigateTo("results/submit");
     }
 
 }

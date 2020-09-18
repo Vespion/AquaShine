@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H3x.BlazorProgressIndicator
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{16C8BE72-C26B-4058-9931-04295CC04B8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquaShine.Emails", "Source\AquaShine.Emails\AquaShine.Emails.csproj", "{92676FD9-3698-457B-85B4-5D70D20F4CFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaShine.Emails", "Source\AquaShine.Emails\AquaShine.Emails.csproj", "{92676FD9-3698-457B-85B4-5D70D20F4CFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
