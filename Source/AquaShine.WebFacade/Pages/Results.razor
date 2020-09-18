@@ -1,8 +1,13 @@
 ﻿@page "/results"
-@using Sve.Blazor.DataTable.Components
 @using AquaShine.WebSupport
+@using Microsoft.Extensions.Logging
 
-<article>
+@inject ILogger<Results> Logger
+@inject IHttpClientFactory ClientFactory
+@inject IMatToaster Toaster
+@inject IIndicatorService IndicatorService
+
+<article class="mat-layout-grid">
     <MatH1>Results</MatH1>
     <style>
         .app-fab--absolute {
@@ -15,50 +20,156 @@
             overflow-x: scroll;
         }
     </style>
+    <Indicator IndicatorContext="DataTable">
+        <div class="mat-layout-grid-inner">
+            <section class="mat-layout-grid-cell-span-6">
+                <MatTable Items="@Items" LoadInitialData="false" Striped="true" ShowPaging="false"
+                          AllowSelection="true" DebounceMilliseconds="150" class="mat-elevation-z5"
+                          SelectionChanged="SelectionChanged">
+                    <MatTableHeader>
+                        <!--<MatSortHeaderRow>-->
+                        <th sortId="position">Position</th>
+                        <th>Number</th>
+                        <th>Name</th>
+                        <th>Time to complete</th>
+                        <th>Verified</th>
+                        @*<th>Gender</th>
+                        <th>Image</th>*@
+                        <!--</MatSortHeaderRow>-->
+                    </MatTableHeader>
+                    <MatTableRow>
+                        <td>@context.Submission.Position</td>
+                        <td>@context.Id</td>
+                        <td>@context.Name</td>
+                        <td>@context.Submission.TimeToComplete</td>
+                        <td>
+                            @if (context.Submission.Verified)
+                            {
+                                <MatIcon Icon="@MatIconNames.Verified_user" />
+                            }
+                        </td>
+                        @*<td>
+                            <GenderImage Gender="context.BioGender" />
+                        </td>
+                        <td>
+                            @if (context.Submission.DisplayImgUrl != null)
+                            {
+                                <img height="100" src="@context.Submission.DisplayImgUrl" alt="An uploaded image by the entrant." />
+                            }
+                        </td>*@
+                    </MatTableRow>
+                </MatTable>
+            </section>
+            @if (Selected != null)
+            {
+                <section class="mat-layout-grid-cell-span-6">
+                    <MatCard>
+                        <MatCardContent>
+                            <MatCardMedia Wide="true" ImageUrl="@Selected.Submission.DisplayImgUrl.ToString()"></MatCardMedia>
+                            <div>
+                                <MatHeadline6>
+                                    @Selected.Name
+                                </MatHeadline6>
+                                <MatSubtitle2>
+                                    Finished in @Selected.Submission.TimeToComplete
+                                </MatSubtitle2>
+                            </div>
 
-    <DataTable TModel="Entrant" Items="Items" IsLoading="@Loading" FetchData="DoFetchData" Styles="TableStyle.Hover" UsePaging="true" CssClass="table-scroll">
-        <DataTableColumn IsSortable="true" IsFilterable="true" TModel="Entrant" Property="e => e.Id" CustomTitle="Entrant Number" />
-        <DataTableColumn IsSortable="true" IsFilterable="true" TModel="Entrant" Property="e => e.Submission.DisplayName ?? e.Name ?? MissingNameValue" CustomTitle="Name" />
-        <DataTableColumn IsSortable="true" IsFilterable="true" TModel="Entrant" Property="e => e.Submission.TimeToComplete" CustomTitle="Time taken" />
-        <DataTableColumn IsFilterable="true" TModel="Entrant" Property="e => e.Submission.Verified" CustomTitle="Verified">
-            <RowTemplate Context="entrant">
-                @if (entrant.Submission.Verified)
-                {
-                    <MatIcon Icon="@MatIconNames.Verified_user" />
-                }
-            </RowTemplate>
-        </DataTableColumn>
-    </DataTable>
+                            <MatChipSet>
+                                <MatChip Label="@Selected.BioGender.ToString()"></MatChip>
+                                @if (Selected.Submission.Verified)
+                                {
+                                    <MatChip Label="Verified" LeadingIcon="@MatIconNames.Verified_user"></MatChip>
+                                }
+                                @if (Selected.Submission.Position <= 5)
+                                {
+                                    <MatChip Label="Top 5!" LeadingIcon="@MatIconNames.Whatshot"></MatChip>
+                                }
+                                @if (Selected.Submission.Position <= 10)
+                                {
+                                    <MatChip Label="Top 10!" LeadingIcon="@MatIconNames.Star"></MatChip>
+                                }
+                            </MatChipSet>
+                        </MatCardContent>
+                    </MatCard>
+                </section>
+            }
+            else
+            {
+                <section class="mat-layout-grid-cell-span-6">
+                    <!--Placeholder to keep paginator on the second row-->
+                </section>
+            }
+            <nav class="mat-layout-grid-cell-span-6">
+                <MatPaginator Length="@totalLength" PageSize="5" Page="@OnPage"></MatPaginator>
 
-    <MatFAB Class="app-fab--absolute" Icon="@MatIconNames.Add" Label="Submit your time"></MatFAB>
+            </nav>
+            <MatFAB Class="app-fab--absolute" Icon="@MatIconNames.Add" Label="Submit your time" OnClick="Callback"></MatFAB>
+        </div>
+    </Indicator>
 </article>
 
 @code{
-    const string MissingNameValue = "(unnamed)";
-    List<Entrant> Items;
+    readonly List<Entrant> Items = new List<Entrant>();
+    HttpClient _client;
 
-    bool Loading = true;
+    int pageSize = 25;
+    int pageIndex = 0;
+    int totalLength;
 
-    // Method will be called by the DataTable when necessary
-    private async Task DoFetchData(RequestArgs<Entrant> args)
+    Task<int> getTotalLengthTask;
+
+    void OnPage(MatPaginatorPageEvent e)
     {
-        await Task.Delay(TimeSpan.FromSeconds(1));
-        Items = new List<Entrant>();
-        for (var i = 1; i < 10; i++)
-        {
-            Items.Add(
-                new Entrant
-                {
-                    Id = i,
-                    Name = i.ToString(),
-                    Submission = new Submission
-                    {
-                        TimeToComplete = TimeSpan.FromHours(2.5 + i),
-                        Verified = i % 2 != 0
-                    }
-                });
-        }
+        pageSize = e.PageSize;
+        pageIndex = e.PageIndex;
+        DataProcess();
 
-        StateHasChanged();
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _client = ClientFactory.CreateClient("ApiClient");
+        getTotalLengthTask = _client.GetFromJsonAsync<int>("results/count");
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            totalLength = await getTotalLengthTask;
+            DataProcess();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    void DataProcess()
+    {
+        IndicatorService.StartTaskAsync(async (task) =>
+        {
+            totalLength = await _client.GetFromJsonAsync<int>("results/count");
+            var data = await _client.GetFromJsonAsync<IEnumerable<Entrant>>($"results?PageSize={pageSize}&Page={pageIndex}&SearchTerm=");
+            Items.Clear();
+            Items.AddRange(data);
+            StateHasChanged();
+        }, "DataTable", "Fetching data!", "Please wait ...");
+    }
+
+    private void SelectionChanged(object obj)
+    {
+        if (obj is Entrant entrant)
+        {
+            Selected = entrant;
+            StateHasChanged();
+        }
+    }
+
+    public Entrant Selected { get; set; }
+
+    private void Callback(MouseEventArgs obj)
+    {
+        Toaster.Add("Not yet implemented", MatToastType.Danger, "Error");
+    }
+
 }

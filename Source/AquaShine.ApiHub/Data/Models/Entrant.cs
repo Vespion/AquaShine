@@ -18,6 +18,12 @@ namespace AquaShine.ApiHub.Data.Models
         //public long Id { get => long.Parse(RowKey, new NumberFormatInfo()); set => RowKey = value.ToString("X", new NumberFormatInfo()); }
 
         /// <summary>
+        /// Flag that indicates this entrant has been deleted.
+        /// </summary>
+        /// <remarks>Entrant data is preserved in case the deletion was accidental. If so it is easy to reverse by changing this flag</remarks>
+        public bool SoftDelete { get; set; }
+
+        /// <summary>
         /// Id of the order. If order is refunded this user is deleted
         /// </summary>
         public string EventbriteId { get; set; } = null!;
@@ -30,7 +36,7 @@ namespace AquaShine.ApiHub.Data.Models
         /// <summary>
         /// The submission for the user
         /// </summary>
-        public Submission? Details { get; set; }
+        public Submission? Submission { get; set; }
 
         /// <summary>
         /// Email address for the entrant
@@ -51,22 +57,23 @@ namespace AquaShine.ApiHub.Data.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Framework method, parameters will not be null")]
         public void ReadEntity(IDictionary<string, EntityProperty> properties, OperationContext operationContext)
         {
-            Details = new Submission();
+            Submission = new Submission();
 
             EventbriteId = properties[nameof(EventbriteId)].StringValue;
             Name = properties[nameof(Name)].StringValue;
+            SoftDelete = properties[nameof(SoftDelete)].BooleanValue ?? false;
 
-            Details.TimeToComplete = properties.ContainsKey(nameof(Details.TimeToComplete)) ?
-                TimeSpan.Parse(properties[nameof(Details.TimeToComplete)].StringValue, new NumberFormatInfo()) :
+            Submission.TimeToComplete = properties.ContainsKey(nameof(Submission.TimeToComplete)) ?
+                TimeSpan.Parse(properties[nameof(Submission.TimeToComplete)].StringValue, new NumberFormatInfo()) :
                 (TimeSpan?)null;
 
-            Details.Verified = properties.ContainsKey(nameof(Details.Verified)) && properties[nameof(Details.Verified)].BooleanValue.GetValueOrDefault(false);
-            Details.Show = properties.ContainsKey(nameof(Details.Show)) && properties[nameof(Details.Show)].BooleanValue.GetValueOrDefault(false);
-            Details.Locked = properties.ContainsKey(nameof(Details.Locked)) && properties[nameof(Details.Locked)].BooleanValue.GetValueOrDefault(false);
+            Submission.Verified = properties.ContainsKey(nameof(Submission.Verified)) && properties[nameof(Submission.Verified)].BooleanValue.GetValueOrDefault(false);
+            Submission.Show = properties.ContainsKey(nameof(Submission.Show)) && properties[nameof(Submission.Show)].BooleanValue.GetValueOrDefault(false);
+            Submission.Locked = properties.ContainsKey(nameof(Submission.Locked)) && properties[nameof(Submission.Locked)].BooleanValue.GetValueOrDefault(false);
 
-            Details.DisplayImgUrl = properties.ContainsKey(nameof(Details.DisplayImgUrl)) ? new Uri(properties[nameof(Details.DisplayImgUrl)].StringValue) : (Uri?)null;
-            Details.VerifyingImgUrl = properties.ContainsKey(nameof(Details.VerifyingImgUrl)) ? new Uri(properties[nameof(Details.VerifyingImgUrl)].StringValue) : (Uri?)null;
-            Details.DisplayName = properties.ContainsKey(nameof(Details.DisplayName)) ? properties[nameof(Details.DisplayName)].StringValue : null;
+            Submission.DisplayImgUrl = properties.ContainsKey(nameof(Submission.DisplayImgUrl)) ? new Uri(properties[nameof(Submission.DisplayImgUrl)].StringValue) : (Uri?)null;
+            Submission.VerifyingImgUrl = properties.ContainsKey(nameof(Submission.VerifyingImgUrl)) ? new Uri(properties[nameof(Submission.VerifyingImgUrl)].StringValue) : (Uri?)null;
+            Submission.DisplayName = properties.ContainsKey(nameof(Submission.DisplayName)) ? properties[nameof(Submission.DisplayName)].StringValue : null;
 
             Email = properties[nameof(Email)].StringValue;
             Address = JsonSerializer.Deserialize<Address>(properties[nameof(Address)].StringValue);
@@ -80,16 +87,17 @@ namespace AquaShine.ApiHub.Data.Models
             {
                 {nameof(EventbriteId), EntityProperty.GeneratePropertyForString(EventbriteId)},
                 {nameof(Name), EntityProperty.GeneratePropertyForString(Name)},
-                {nameof(Details.TimeToComplete), EntityProperty.GeneratePropertyForString(Details?.TimeToComplete?.ToString("G", new NumberFormatInfo()))},
-                {nameof(Details.Verified), EntityProperty.GeneratePropertyForBool(Details?.Verified)},
-                {nameof(Details.Show), EntityProperty.GeneratePropertyForBool(Details?.Show)},
-                {nameof(Details.Locked), EntityProperty.GeneratePropertyForBool(Details?.Locked)},
-                {nameof(Details.DisplayImgUrl), EntityProperty.GeneratePropertyForString(Details?.DisplayImgUrl?.ToString())},
-                {nameof(Details.VerifyingImgUrl), EntityProperty.GeneratePropertyForString(Details?.VerifyingImgUrl?.ToString())},
-                {nameof(Details.DisplayName), EntityProperty.GeneratePropertyForString(Details?.DisplayName)},
+                {nameof(Submission.TimeToComplete), EntityProperty.GeneratePropertyForString(Submission?.TimeToComplete?.ToString("G", new NumberFormatInfo()))},
+                {nameof(Submission.Verified), EntityProperty.GeneratePropertyForBool(Submission?.Verified)},
+                {nameof(Submission.Show), EntityProperty.GeneratePropertyForBool(Submission?.Show)},
+                {nameof(Submission.Locked), EntityProperty.GeneratePropertyForBool(Submission?.Locked)},
+                {nameof(Submission.DisplayImgUrl), EntityProperty.GeneratePropertyForString(Submission?.DisplayImgUrl?.ToString())},
+                {nameof(Submission.VerifyingImgUrl), EntityProperty.GeneratePropertyForString(Submission?.VerifyingImgUrl?.ToString())},
+                {nameof(Submission.DisplayName), EntityProperty.GeneratePropertyForString(Submission?.DisplayName)},
                 {nameof(Email), EntityProperty.GeneratePropertyForString(Email)},
                 {nameof(Address), EntityProperty.GeneratePropertyForString(JsonSerializer.Serialize(Address))},
-                {nameof(BioGender), EntityProperty.GeneratePropertyForString(BioGender.ToString("G"))}
+                {nameof(BioGender), EntityProperty.GeneratePropertyForString(BioGender.ToString("G"))},
+                {nameof(SoftDelete), EntityProperty.GeneratePropertyForBool(SoftDelete)}
             };
         }
 

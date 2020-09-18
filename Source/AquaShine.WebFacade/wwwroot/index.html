@@ -23,19 +23,57 @@
         document.createElement("picture");
     </script>
     <script src="js/picturefill.min.js" async></script>-->
+    <script src="_content/Blazor.Extensions.Logging/blazor.extensions.logging.js" async="" defer></script>
+    <script src="/blazor.extensions.logging.js"></script>
 </head>
 
 <body>
-    <app>Loading...</app>
+<app>
+    <style>
+        .preloader {
+            -ms-align-items: center;
+            -o-align-items: center;
+            -webkit-align-items: center;
+            align-items: center;
+            background: rgb(23, 22, 22);
+            display: flex;
+            height: 100vh;
+            -o-justify-content: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            left: 0;
+            position: fixed;
+            top: 0;
+            -ms-transition: opacity 0.3s linear;
+            -o-transition: opacity 0.3s linear;
+            -webkit-transition: opacity 0.3s linear;
+            transition: opacity 0.3s linear;
+            width: 100%;
+            z-index: 9999;
+        }
+    </style>
+    <div class="preloader">
+        <img src="/img/spinner.svg" alt="spinner">
+        <noscript>
+            <h2>JavaScript is disabled</h2>
+            <h3>Performance and/or functionality may be impacted</h3>
+            <p>
+                Here are the
+                <a href="https://www.enable-javascript.com/">
+                    instructions on how to enable JavaScript in your web browser
+                </a>.
+            </p>
+        </noscript>
+    </div>
+</app>
 
     <!-- <div id="blazor-error-ui"> -->
     <!--     An unhandled error has occurred. -->
     <!--     <a href="" class="reload">Reload</a> -->
     <!--     <a class="dismiss">🗙</a> -->
-    <!-- </div> -->
-    <script src="_framework/blazor.webassembly.js" async></script>
-    <script src="_content/MatBlazor/dist/matBlazor.js" async></script>
-    <script src="_content/Sve.Blazor.DataTable/js/DataTable.js" async defer></script>
+<!-- </div> -->
+<script src="_framework/blazor.webassembly.js" async defer></script>
+    <script src="_content/MatBlazor/dist/matBlazor.js" async defer></script>
     <script async defer>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 </html>

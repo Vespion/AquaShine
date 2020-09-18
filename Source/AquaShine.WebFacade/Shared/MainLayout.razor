@@ -10,11 +10,16 @@
         await base.OnInitializedAsync();
     }
 
-    bool Opened = true;
+    bool Opened = false;
 
     void ButtonClicked()
     {
         Opened = !Opened;
+    }
+
+    void CloseMenu()
+    {
+        Opened = false;
     }
 }
 
@@ -38,11 +43,11 @@
     </MatAppBar>
 
     <MatAppBarContent>
-        <MatDrawerContainer Style="height: 100vh; position: fixed;">
-            <MatHidden Breakpoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up">
+        <MatDrawerContainer @onclick="@CloseMenu">
+            @*<MatHidden Breakpoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up">
                 <ChildContent>
                     @{/*This drawer is used when the screen is bigger numpty!*/}
-                    <MatDrawer @bind-Opened="@Opened" Mode="@MatDrawerMode.Modal">
+                    <MatDrawer @bind-Opened="@Opened" Mode="@MatDrawerMode.Modal" Style="height: 100vh; position: fixed;">
                         <nav>
                             <MatList>
                                 <MatButton Link="/">
@@ -70,13 +75,31 @@
                         </nav>
                     </MatDrawer>
                 </ElseContent>
-            </MatHidden>
+            </MatHidden>*@
+            
+            <MatDrawer @bind-Opened="@Opened" Mode="@MatDrawerMode.Modal">
+                <nav>
+                    <MatList>
+                        <MatListItem>
+                            <MatButton Link="/">
+                                <MatIcon Icon="@MatIconNames.Home" />&#160;Home
+                            </MatButton>
+                        </MatListItem>
+                        <MatListDivider />
+                        <NavMenu />
+                    </MatList>
+                </nav>
+            </MatDrawer>
 
-            <MatDrawerContent>
+            <MatDrawerContent Style="height: initial; position: initial;">
                 <div>
-                    <main style="margin-left: 10px; width: 100vw;">
+                    <main style="margin-left: 10px;">
                         @Body
                     </main>
+                    @* ReSharper disable once CssNotResolved *@
+                    <!--<footer class="mdc-top-app-bar__row" style="background-color: var(--mdc-theme-primary, #6200ee); flex-direction: column; justify-content: space-between">
+
+                    </footer>-->
                 </div>
             </MatDrawerContent>
         </MatDrawerContainer>

@@ -1,0 +1,3 @@
+[submodule "lib/ProgressIndicator"]
+	path = lib/ProgressIndicator
+	url = https://github.com/h3x4d3c1m4l/BlazorProgressIndicator.git

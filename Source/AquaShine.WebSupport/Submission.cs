@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace AquaShine.WebSupport
 {
@@ -20,6 +21,7 @@ namespace AquaShine.WebSupport
         /// <summary>
         /// The time it took for a entrant to complete the challenge
         /// </summary>
+        [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan? TimeToComplete { get; set; }
 
         /// <summary>
@@ -28,8 +30,8 @@ namespace AquaShine.WebSupport
         public bool Verified { get; set; }
 
         /// <summary>
-        /// Use a display name instead of the entrants name
+        /// The position this submission is in
         /// </summary>
-        public string? DisplayName { get; set; }
+        public int Position { get; set; }
     }
 }

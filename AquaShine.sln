@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaShine.ApiHub", "Source\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaShine.WebFacade", "Source\AquaShine.WebFacade\AquaShine.WebFacade.csproj", "{22448263-9B6D-4932-BFD6-A5A673ABFFAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquaShine.WebSupport", "Source\AquaShine.WebSupport\AquaShine.WebSupport.csproj", "{1F770E36-9645-4140-8F90-47AB29C2C898}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaShine.WebSupport", "Source\AquaShine.WebSupport\AquaShine.WebSupport.csproj", "{1F770E36-9645-4140-8F90-47AB29C2C898}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaShine.ApiFacade", "Source\AquaShine.ApiFacade\AquaShine.ApiFacade.csproj", "{48E59CFD-6C26-4D29-B038-4B5ECA95F71C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H3x.BlazorProgressIndicator", "lib\ProgressIndicator\src\H3x.BlazorProgressIndicator\H3x.BlazorProgressIndicator.csproj", "{7DC68034-B98B-466A-BB97-470FA4944329}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{16C8BE72-C26B-4058-9931-04295CC04B8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +41,21 @@ Global
 		{1F770E36-9645-4140-8F90-47AB29C2C898}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F770E36-9645-4140-8F90-47AB29C2C898}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F770E36-9645-4140-8F90-47AB29C2C898}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48E59CFD-6C26-4D29-B038-4B5ECA95F71C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48E59CFD-6C26-4D29-B038-4B5ECA95F71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48E59CFD-6C26-4D29-B038-4B5ECA95F71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48E59CFD-6C26-4D29-B038-4B5ECA95F71C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC68034-B98B-466A-BB97-470FA4944329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC68034-B98B-466A-BB97-470FA4944329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC68034-B98B-466A-BB97-470FA4944329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC68034-B98B-466A-BB97-470FA4944329}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8B3D474D-058A-4194-94BB-BCDA29FCAD09} = {8BEE6BDC-CC45-4E7C-847A-F08CD0D11A9F}
+		{7DC68034-B98B-466A-BB97-470FA4944329} = {16C8BE72-C26B-4058-9931-04295CC04B8F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3F7E44A-BD5F-4C32-98BE-DF8078F8C74F}

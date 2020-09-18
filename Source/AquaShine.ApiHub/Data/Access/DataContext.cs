@@ -16,7 +16,7 @@ namespace AquaShine.ApiHub.Data.Access
     /// <summary>
     /// Wrapper for data operations
     /// </summary>
-    public class DataContext
+    public class TableDataContext : IDataContext
     {
         private readonly CloudStorageAccount _storageAccount;
         private readonly CloudTable _entrantTable;
@@ -26,7 +26,7 @@ namespace AquaShine.ApiHub.Data.Access
         /// </summary>
         /// <param name="account"></param>
         /// <param name="storageAccount"></param>
-        public DataContext(CloudTableClient account, CloudStorageAccount storageAccount)
+        public TableDataContext(CloudTableClient account, CloudStorageAccount storageAccount)
         {
             if (account == null) throw new ArgumentNullException(nameof(account));
             _storageAccount = storageAccount ?? throw new ArgumentNullException(nameof(storageAccount));
@@ -69,10 +69,10 @@ namespace AquaShine.ApiHub.Data.Access
         public async Task<IEnumerable<Entrant>> FetchSubmissionOrderedList(int count, int skip, bool? verified)
         {
             var query = _entrantTable.CreateQuery<Entrant>()
-                .Where(z => z.Details!.Locked);
+                .Where(z => z.Submission!.Locked);
             if (verified.HasValue)
             {
-                query = query.Where(x => x.Details!.Verified == verified.Value);
+                query = query.Where(x => x.Submission!.Verified == verified.Value);
             }
 
             TableQuerySegment<Entrant>? querySegment = null;
@@ -85,7 +85,31 @@ namespace AquaShine.ApiHub.Data.Access
                 returnList.AddRange(querySegment);
             }
 
-            return returnList.OrderBy(o => o.Details!.TimeToComplete).Skip(skip).Take(count);
+            return returnList.OrderBy(o => o.Submission!.TimeToComplete).Skip(skip).Take(count);
+        }
+
+        public async Task<IEnumerable<Entrant>> FetchByNameFilterOrdered(string name, int count, int skip, bool? verified)
+        {
+            var query = _entrantTable.CreateQuery<Entrant>()
+                .Where(z => z.Submission!.Locked);
+            if (verified.HasValue)
+            {
+                query = query.Where(x => x.Submission!.Verified == verified.Value);
+            }
+
+            query = query.Where(x => x.Name.Contains(name));
+
+            TableQuerySegment<Entrant>? querySegment = null;
+            var returnList = new List<Entrant>();
+
+            while (querySegment == null || querySegment.ContinuationToken != null)
+            {
+                querySegment = await query.AsTableQuery()
+                    .ExecuteSegmentedAsync(querySegment?.ContinuationToken).ConfigureAwait(false);
+                returnList.AddRange(querySegment);
+            }
+
+            return returnList.OrderBy(o => o.Submission!.TimeToComplete).Skip(skip).Take(count);
         }
 
         /// <summary>
@@ -101,7 +125,7 @@ namespace AquaShine.ApiHub.Data.Access
 
             if (verified.HasValue)
             {
-                query = query.Where(x => x.Details!.Verified == verified.Value);
+                query = query.Where(x => x.Submission!.Verified == verified.Value);
             }
 
             TableQuerySegment<Entrant>? querySegment = null;
@@ -163,6 +187,36 @@ namespace AquaShine.ApiHub.Data.Access
         {
             var operation = TableOperation.InsertOrMerge(entrant);
             return (Entrant)(await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false)).Result;
+        }
+
+        /// <inheritdoc />
+        public async Task Delete(Entrant entrant)
+        {
+            if (entrant == null) throw new ArgumentNullException(nameof(entrant));
+            //var operation = TableOperation.Delete(entrant);
+            //await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false);
+            entrant.SoftDelete = true;
+            await MergeWithStore(entrant).ConfigureAwait(false);
+        }
+
+        public async Task<int> GetTotalSubmissions()
+        {
+            var query = _entrantTable.CreateQuery<Entrant>().AsQueryable();
+
+            query = query.Where(x => x.Submission != null && x.Submission.Locked);
+
+            TableQuerySegment<Entrant>? querySegment = null;
+            var count = 0;
+
+            while (querySegment == null || querySegment.ContinuationToken != null)
+            {
+                querySegment = await query.AsTableQuery()
+                    .ExecuteSegmentedAsync(querySegment?.ContinuationToken).ConfigureAwait(false);
+
+                count += querySegment.Results.Count;
+            }
+
+            return count;
         }
 
         /// <summary>

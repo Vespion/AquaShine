@@ -2,12 +2,12 @@
 {
     public class Entrant
     {
-        public int Id { get; set; }
+        public string Id { get; set; } = null!;
 
         /// <summary>
         /// Name of the entrant
         /// </summary>
-        public string? Name { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// The submission for the user

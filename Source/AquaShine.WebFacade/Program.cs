@@ -3,8 +3,12 @@ using MatBlazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Blazor.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using H3x.BlazorProgressIndicator;
 
 namespace AquaShine.WebFacade
 {
@@ -16,15 +20,21 @@ namespace AquaShine.WebFacade
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddLoadingBar();
-            builder.Services.AddLogging();
+            builder.Services.AddProgressIndicator();
+
+            builder.Logging.AddBrowserConsole();
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
             builder.Services.AddBootstrapCss();
             builder.Services.AddMatToaster();
 
             builder.Services.AddHttpClient("ApiClient", (sp, client) =>
             {
-                client.BaseAddress = new Uri("");
+                client.BaseAddress = new Uri("http://localhost:7071/api/");
                 client.EnableIntercept(sp);
             });
+
+            builder.Services.AddSingleton(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("ApiClient"));
 
             await builder.Build()
                 .UseLoadingBar()
