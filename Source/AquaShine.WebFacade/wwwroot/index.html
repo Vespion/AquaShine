@@ -17,14 +17,24 @@
     <base href="/" />
     <link href="manifest.json" rel="manifest" />
     <link href="_content/MatBlazor/dist/matBlazor.css" rel="stylesheet" />
-    <script src="_content/BlazorStrap/blazorStrap.js" async></script>
+    <style>
+        @font-face {
+            font-display: swap
+        }
+    </style>
+    <link rel="preload" as="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"/>
+    <script src="_content/BlazorStrap/blazorStrap.js" async defer></script>
     <!--<script>
         // Picture element HTML5 shiv
         document.createElement("picture");
     </script>
     <script src="js/picturefill.min.js" async></script>-->
-    <script src="_content/Blazor.Extensions.Logging/blazor.extensions.logging.js" async="" defer></script>
-    <script src="/blazor.extensions.logging.js"></script>
+    <script src="_content/Blazor.Extensions.Logging/blazor.extensions.logging.js" async defer></script>
+    <script src="/blazor.extensions.logging.js" async defer></script>
+
+    <!--<link rel="preload" as="fetch" type="application/octet-stream" href="_framework/_bin/mscorlib.dll" />
+    <link rel="preload" as="fetch" type="application/octet-stream" href="_framework/_bin/System.Core.dll" />
+    <link rel="preload" as="fetch" type="application/octet-stream" href="_framework/wasm/dotnet.wasm" />-->
 </head>
 
 <body>
@@ -72,7 +82,7 @@
     <!--     <a href="" class="reload">Reload</a> -->
     <!--     <a class="dismiss">🗙</a> -->
 <!-- </div> -->
-<script src="_framework/blazor.webassembly.js" async defer></script>
+    <script src="_framework/blazor.webassembly.js" async defer></script>
     <script src="_content/MatBlazor/dist/matBlazor.js" async defer></script>
     <script async defer>navigator.serviceWorker.register('service-worker.js');</script>
 </body>

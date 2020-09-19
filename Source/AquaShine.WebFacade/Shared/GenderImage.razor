@@ -1,0 +1,20 @@
+﻿@using AquaShine.WebSupport
+
+@code {
+   [Parameter] public Gender Gender { get; set; }
+}
+
+@switch (Gender)
+{
+    case Gender.Male:
+        <img alt="Male" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAABLklEQVRYhe2VUU7CQBiEP32QB3sQaWPgRZGzeCer5TIauEXxAIInABNKQqMPO419ELqLf0NIOsmmyWbmn9nt/rvQ4QyRACkwB7405ppL2jS+AibADvjeM3ZAJq65+VQmG+AZuAeuNUbAC1CIM7UOMVHhBXB7gDcAluJmVuYJbms3Deb1EIU0sUWAFLeiNECTSfNkEeBdxe4CNCNpcosAaxWLAjSRNKsm4uWRoczq+hAX+oYcqIr7YRFgpu9jQICKOzvI8kQMlLjWGnjwh8AW14Y3FgHgt62WDSGGwCfhbduIHvCmwoUCPeBOewSMcbflVpxXaUzRw933JfsfoxK3cvPHqI5YQfKaca65fpvGf6EKcDTauoi6AN64COT7/m/vuiffgf+i64LzD9Dh5PgB1rBT7ujsLmMAAAAASUVORK5CYII="/>
+        break;
+    case Gender.Female:
+        <img alt="Female" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAABLklEQVRYhe2VUU7CQBiEP32QB3sQaWPgRZGzeCer5TIauEXxAIInABNKQqMPO419ELqLf0NIOsmmyWbmn9nt/rvQ4QyRACkwB7405ppL2jS+AibADvjeM3ZAJq65+VQmG+AZuAeuNUbAC1CIM7UOMVHhBXB7gDcAluJmVuYJbms3Deb1EIU0sUWAFLeiNECTSfNkEeBdxe4CNCNpcosAaxWLAjSRNKsm4uWRoczq+hAX+oYcqIr7YRFgpu9jQICKOzvI8kQMlLjWGnjwh8AW14Y3FgHgt62WDSGGwCfhbduIHvCmwoUCPeBOewSMcbflVpxXaUzRw933JfsfoxK3cvPHqI5YQfKaca65fpvGf6EKcDTauoi6AN64COT7/m/vuiffgf+i64LzD9Dh5PgB1rBT7ujsLmMAAAAASUVORK5CYII="/>
+        break;
+    case Gender.Other:
+        <img alt="Other" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAABHklEQVRYhe2VXWrCQBSFP/pQH5qF1ATRl1a7lu6p0bgZRXcRu4CqK7AFIxjqw5zQPFSTkZu3OTAEhnPu/SbMDwQF+SsBUmAD/GhsNJd02fgRmANn4PfKOAOZvObNV2pyBKbAK/CkMQZmQCHPyhpirsJbYHDDNwR28mZWzRPcrz02NK9DFMrEFgApbkWpRyZT5sMC4FPFXjwyY2VyC4BvFYs8MpEyhybjw51QZnXbGLf6+myoyvtlAbDW990DoPKub7paKgZK3NEatvCPgBPuGD5bAMDfsdo1QIyAPf7HtlE9YKnChYAmuN0eAW+42/Ikz0IZU/Vw933J9ceoxK3c/DGqKxZIXmuca67fZeP/VAHcra4uogAQAAJAUFBrXQAx/FDvLY1DjQAAAABJRU5ErkJggg=="/>
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}
