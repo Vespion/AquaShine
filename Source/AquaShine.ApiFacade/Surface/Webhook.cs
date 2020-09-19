@@ -84,7 +84,11 @@ namespace AquaShine.ApiFacade.Surface
 
         private static IEmailMessage GenerateMailMessage(Entrant entrant)
         {
-            var msg = new EntrantCreated {Subject = "Thanks for joining! Here's your number"};
+            var localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
+            var azureRoot = $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot";
+
+            var actualRoot = localRoot ?? azureRoot;
+            var msg = new EntrantCreated(Path.Combine(actualRoot, "Compiled")) {Subject = "Thanks for joining! Here's your number"};
             msg.EmailVariables.FirstName = entrant.Name;
             msg.EmailVariables.EntrantNum = long.Parse(entrant.RowKey, NumberStyles.HexNumber, new NumberFormatInfo());
             return msg;

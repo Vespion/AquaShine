@@ -27,12 +27,6 @@ namespace AquaShine.ApiFacade
 
         public void Configure(IWebJobsBuilder builder)
         {
-            builder.Services.AddLogging(configure =>
-            {
-                configure.SetMinimumLevel(LogLevel.Debug);
-                configure.AddConsole();
-            });
-
             var localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
             var azureRoot = $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot";
 
@@ -43,6 +37,13 @@ namespace AquaShine.ApiFacade
                 .AddEnvironmentVariables()
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true);
             IConfiguration configuration = configBuilder.Build();
+
+            builder.Services.AddLogging(configure =>
+            {
+                configure.SetMinimumLevel(LogLevel.Debug);
+                configure.AddConsole();
+                configure.AddApplicationInsights(configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY"));
+            });
 
             MailChemist.MailChemist.RegisterGlobalTypes();
             MailChemist.MailChemist.RegisterGlobalFilters();

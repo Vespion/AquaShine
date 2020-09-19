@@ -10,6 +10,13 @@ namespace AquaShine.Emails.Templates
 {
     public class EntrantCreated : IEmailMessage
     {
+        private readonly string _compliedPath;
+
+        public EntrantCreated(string compliedPath)
+        {
+            _compliedPath = compliedPath;
+        }
+
         [MailChemistModel]
         public class Model
         {
@@ -25,7 +32,7 @@ namespace AquaShine.Emails.Templates
         {
             return Task.Run(() =>
             {
-                var mailChemist = new MailChemist.MailChemist(new FileEmailContentProvider("Compiled"));
+                var mailChemist = new MailChemist.MailChemist(new FileEmailContentProvider(_compliedPath));
                 if (!mailChemist.TryGenerate("EntrantCreated.mc", EmailVariables, out var result, out var errors))
                 {
                     throw new AggregateException(errors.Select(e => new Exception(e)));

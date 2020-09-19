@@ -16,7 +16,7 @@ namespace AquaShine.ApiFacade.Helpers
         {
             var optionsBuilder = new DbContextOptionsBuilder<DbDataContext>();
 
-            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=main;User Id=postgres;Password=mysecretpassword;", provider =>
+            optionsBuilder.UseNpgsql("Server=aqua-shine.postgres.database.azure.com;Database=PrimaryAquaShine;Port=5432;User Id=super@aqua-shine;Password=T#C>n$H4|8>=F7lrBH>S;Ssl Mode=Require;", provider =>
             {
                 
             });
