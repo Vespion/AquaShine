@@ -8,6 +8,6 @@ namespace AquaShine.WebSupport.Api.Submission
     {
         public Uri VerificationUri { get; set; }
 
-        public Uri DisplayUri { get; set; }
+        public Uri? DisplayUri { get; set; }
     }
 }

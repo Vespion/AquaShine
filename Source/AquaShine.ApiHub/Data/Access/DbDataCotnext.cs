@@ -7,8 +7,10 @@ using AquaShine.ApiHub.Data.Models;
 using AquaShine.ApiHub.Eventbrite.Models;
 using Azure.Storage;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
 using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.EntityFrameworkCore;
 
 namespace AquaShine.ApiHub.Data.Access
@@ -32,16 +34,18 @@ namespace AquaShine.ApiHub.Data.Access
         {
             modelBuilder.Entity<Address>().Property<int>("Id");
             modelBuilder.Entity<Address>().HasKey("Id");
+            modelBuilder.Entity<Address>().HasOne<Entrant>().WithOne(x => x.Address).HasForeignKey<Entrant>("AddressId");
 
             modelBuilder.Entity<Entrant>().HasKey(k => k.RowKey);
             modelBuilder.Entity<Entrant>().HasIndex(x => x.EventbriteId);
-            modelBuilder.Entity<Entrant>().HasOne<Submission>().WithOne().HasForeignKey(typeof(Submission), "SubmissionId");
+            //modelBuilder.Entity<Entrant>().HasOne<Submission>().WithOne();//.HasForeignKey(typeof(Submission), "EntrantId");
 
             modelBuilder.Entity<Submission>().Property<int>("Id");
             modelBuilder.Entity<Submission>().HasKey("Id");
             modelBuilder.Entity<Submission>().HasIndex(x => x.TimeToComplete);
             modelBuilder.Entity<Submission>().HasIndex(x => x.Verified);
             modelBuilder.Entity<Submission>().HasIndex(x => x.Locked);
+            modelBuilder.Entity<Submission>().HasOne<Entrant>().WithOne().HasForeignKey(typeof(Entrant), "EntrantId");
             base.OnModelCreating(modelBuilder);
         }
 
@@ -99,8 +103,7 @@ namespace AquaShine.ApiHub.Data.Access
                 }
 
                 query = query.Where(s => s.Name.Contains(name));
-                return query.OrderBy(t => t.Submission.TimeToComplete).Skip(skip).Take(count)
-                    .Include(y => y.Submission).AsEnumerable();
+                return query.OrderBy(t => t.Submission.TimeToComplete).Skip(skip).Take(count).AsEnumerable();
             });
         }
 
@@ -117,9 +120,17 @@ namespace AquaShine.ApiHub.Data.Access
         }
 
         /// <inheritdoc />
-        public (Uri verifyUploadUri, Uri? displayUploadUri) GenerateImageUploadUris(string entrantId, bool generateDisplayUri, string verifyContainerName = "photos-verification", string displayContainerName = "photos-display")
+        public async Task<(Uri verifyUploadUri, Uri? displayUploadUri)> GenerateImageUploadUris(string entrantId,
+            bool generateDisplayUri, string verifyContainerName = "photos-verification",
+            string displayContainerName = "photos-display")
         {
             if (string.IsNullOrWhiteSpace(entrantId)) throw new ArgumentNullException(nameof(entrantId));
+
+            //Generate containers
+            var blobClient = new BlobContainerClient(_storageAccount.ToString(true), displayContainerName);
+            await blobClient.CreateIfNotExistsAsync(PublicAccessType.Blob).ConfigureAwait(false);
+            blobClient = new BlobContainerClient(_storageAccount.ToString(true), verifyContainerName);
+            await blobClient.CreateIfNotExistsAsync(PublicAccessType.None).ConfigureAwait(false);
 
             var sasBuilder = new BlobSasBuilder
             {
@@ -130,7 +141,7 @@ namespace AquaShine.ApiHub.Data.Access
             };
 
             //Sets the permissions for the SAS token
-            sasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.Write);
+            sasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.Write | BlobSasPermissions.Delete);
 
             var credentials = new StorageSharedKeyCredential(_storageAccount.Credentials.AccountName,
                 _storageAccount.Credentials.ExportBase64EncodedKey());

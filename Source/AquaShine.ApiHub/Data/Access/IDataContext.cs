@@ -25,7 +25,9 @@ namespace AquaShine.ApiHub.Data.Access
         Task<Entrant?> FindById(string entrantId);
 
         /// <inheritdoc />
-        (Uri verifyUploadUri, Uri? displayUploadUri) GenerateImageUploadUris(string entrantId, bool generateDisplayUri, string verifyContainerName = "photos-verification", string displayContainerName = "photos-display");
+        Task<(Uri verifyUploadUri, Uri? displayUploadUri)> GenerateImageUploadUris(string entrantId,
+            bool generateDisplayUri, string verifyContainerName = "photos-verification",
+            string displayContainerName = "photos-display");
 
         /// <inheritdoc />
         Task<Entrant> MergeWithStore(Entrant entrant);

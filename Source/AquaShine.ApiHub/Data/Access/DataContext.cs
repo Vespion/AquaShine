@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs.Models;
 using CloudStorageAccount = Microsoft.Azure.Storage.CloudStorageAccount;
 
 namespace AquaShine.ApiHub.Data.Access
@@ -227,9 +228,17 @@ namespace AquaShine.ApiHub.Data.Access
         /// <param name="verifyContainerName">The name of the blob container for verification images. Default: 'photos-verification'</param>
         /// <param name="displayContainerName">The name of the blob container for verification images. Default: 'photos-display'</param>
         /// <returns></returns>
-        public (Uri verifyUploadUri, Uri? displayUploadUri) GenerateImageUploadUris(string entrantId, bool generateDisplayUri, string verifyContainerName = "photos-verification", string displayContainerName = "photos-display")
+        public async Task<(Uri verifyUploadUri, Uri? displayUploadUri)> GenerateImageUploadUris(string entrantId,
+            bool generateDisplayUri, string verifyContainerName = "photos-verification",
+            string displayContainerName = "photos-display")
         {
             if (string.IsNullOrWhiteSpace(entrantId)) throw new ArgumentNullException(nameof(entrantId));
+
+            //Generate containers
+            var blobClient = new BlobContainerClient(_storageAccount.ToString(true), displayContainerName);
+            await blobClient.CreateIfNotExistsAsync(PublicAccessType.Blob).ConfigureAwait(false);
+            blobClient = new BlobContainerClient(_storageAccount.ToString(true), verifyContainerName);
+            await blobClient.CreateIfNotExistsAsync(PublicAccessType.None).ConfigureAwait(false);
 
             var sasBuilder = new BlobSasBuilder
             {
@@ -240,7 +249,7 @@ namespace AquaShine.ApiHub.Data.Access
             };
 
             //Sets the permissions for the SAS token
-            sasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.Write);
+            sasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.Write | BlobSasPermissions.Delete);
 
             var credentials = new StorageSharedKeyCredential(_storageAccount.Credentials.AccountName,
                 _storageAccount.Credentials.ExportBase64EncodedKey());

@@ -36,7 +36,7 @@ namespace AquaShine.ApiHub.Data.Models
         /// <summary>
         /// The submission for the user
         /// </summary>
-        public Submission? Submission { get; set; }
+        public virtual Submission? Submission { get; set; }
 
         /// <summary>
         /// Email address for the entrant
@@ -46,7 +46,7 @@ namespace AquaShine.ApiHub.Data.Models
         /// <summary>
         /// The shipping address of the entrant
         /// </summary>
-        public Address Address { get; set; } = null!;
+        public virtual Address Address { get; set; } = null!;
 
         /// <summary>
         /// The biological gender of the entrant

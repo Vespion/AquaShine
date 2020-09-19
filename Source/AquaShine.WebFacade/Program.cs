@@ -22,6 +22,7 @@ namespace AquaShine.WebFacade
             builder.Services.AddLoadingBar();
             builder.Services.AddProgressIndicator();
 
+            builder.Logging.ClearProviders();
             builder.Logging.AddBrowserConsole();
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
 

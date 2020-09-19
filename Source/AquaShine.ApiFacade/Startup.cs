@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using SnowMaker;
 
 [assembly: WebJobsStartup(typeof(Startup))]
@@ -28,7 +29,7 @@ namespace AquaShine.ApiFacade
         {
             builder.Services.AddLogging(configure =>
             {
-                configure.SetMinimumLevel(LogLevel.Trace);
+                configure.SetMinimumLevel(LogLevel.Debug);
                 configure.AddConsole();
             });
 
@@ -70,22 +71,28 @@ namespace AquaShine.ApiFacade
 
             builder.Services.AddScoped<IMailClient, SmtpRelayClient>();
 
-            builder.Services.AddScoped<IDataContext, DbDataContext>(sp =>
+            builder.Services.AddDbContext<DbDataContext>(optionsBuilder =>
             {
-                var _environment = sp.GetService<IHostingEnvironment>();
-                var optionsBuilder = new DbContextOptionsBuilder<DbDataContext>()
-                    .EnableDetailedErrors();
-                if (_environment.IsDevelopment())
+                optionsBuilder.EnableDetailedErrors();
+                //if (_environment.IsDevelopment())
+                //{
+                //    optionsBuilder.EnableSensitiveDataLogging();
+                //}
+                optionsBuilder.UseLazyLoadingProxies();
+                optionsBuilder.UseNpgsql(configuration.GetConnectionStringOrSetting("MainDb"), provider =>
                 {
-                    optionsBuilder.EnableSensitiveDataLogging();
-                }
-                optionsBuilder.UseInMemoryDatabase("aqua-shine");
+                    provider.MigrationsAssembly(typeof(DbDataContext).Assembly.FullName);
+                });
+            });
 
-                var context = new DbDataContext(optionsBuilder.Options,
-                    sp.GetRequiredService<Microsoft.Azure.Storage.CloudStorageAccount>());
+            builder.Services.AddScoped<IDataContext>(sp =>
+            {
+                var context = sp.GetRequiredService<DbDataContext>();
                 //if (init)
                 //{
-                //    for (int i = 0; i < 25; i++)
+                //    context.Database.EnsureDeleted();
+                //    context.Database.EnsureCreated();
+                //    for (int i = 0; i < 2; i++)
                 //    {
                 //        context.Entrants.Add(new Entrant
                 //        {
@@ -103,14 +110,6 @@ namespace AquaShine.ApiFacade
                 //            RowKey = i.ToString("X"),
                 //            PartitionKey = "A",
                 //            Name = "Jonathon Spice",
-                //            Submission = new Submission
-                //            {
-                //                Locked = true,
-                //                Show = true,
-                //                TimeToComplete = TimeSpan.FromHours(2.5 + i),
-                //                Verified = i % 2 != 0,
-                //                DisplayImgUrl = new Uri("https://th.bing.com/th/id/OIP.DFxl_HjAxACjCoF5yMRHeAAAAA?pid=Api&rs=1")
-                //            }
                 //        });
                 //    }
 

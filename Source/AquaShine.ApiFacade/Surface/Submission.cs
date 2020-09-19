@@ -40,7 +40,7 @@ namespace AquaShine.ApiFacade.Surface
                 return new StatusCodeResult(StatusCodes.Status423Locked);
             }
 
-            var uris = _context.GenerateImageUploadUris(entrantId, request.GenerateDisplayImg);
+            var uris = await _context.GenerateImageUploadUris(entrantId, request.GenerateDisplayImg);
             entrant.Submission = new ApiHub.Data.Models.Submission
             {
                 DisplayImgUrl = uris.displayUploadUri,
