@@ -19,7 +19,7 @@ namespace AquaShine.ApiFacade.Helpers
 
             optionsBuilder.UseNpgsql("Server=aqua-shine.postgres.database.azure.com;Database=PrimaryAquaShine;Port=5432;User Id=super@aqua-shine;Password=T#C>n$H4|8>=F7lrBH>S;Ssl Mode=Require;", provider =>
             {
-                
+                provider.MigrationsAssembly("AquaShine.ApiHub");
             });
 
             return new DbDataContext(optionsBuilder.Options, 

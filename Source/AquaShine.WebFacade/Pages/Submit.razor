@@ -38,9 +38,9 @@
                     <div class="mat-layout-grid-cell">
                         <MatNumericUpDownField TValue="int" DecimalPlaces="0" Minimum="0" Outlined="true" Label="Seconds" PlaceHolder="21" @bind-Value="_submissionModel.InitialRequest.TimeSpan.Seconds" />
                     </div>
-                    <div class="mat-layout-grid-cell">
+                    @*<div class="mat-layout-grid-cell">
                         <MatNumericUpDownField TValue="int" DecimalPlaces="0" Minimum="0" Outlined="true" Label="Miliseconds" PlaceHolder="26" @bind-Value="_submissionModel.InitialRequest.TimeSpan.MiliSeconds" />
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </section>
@@ -71,7 +71,10 @@
                                            Label="Drag and drop here or browse for an image to use for verification"></MatFileUpload>
                         </div>
                         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-                            <img src=""/>
+                            <MatBody2>
+                                I'll probably get around to adding image previews....at some point....probably?
+                                - Vesp
+                            </MatBody2>
                         </div>
                     </div>
                     </div>

@@ -1,28 +1,73 @@
 ﻿@page "/guidence"
 
 <article>
-    <MatH1>Staying safe</MatH1>
-    <MatBody1>
-        When taking on the 10k your safety and others around you is important. We have some advice we would like you to consider to stay safe when taking part
-    </MatBody1>
-    <div>
-        <div class="mat-layout-grid">
-            <div class="mat-layout-grid-inner">
-                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2 mat-elevation-z16" style="padding: 15px">
-                    <MatBody2>Plan your route with caution and make sure that it is legal and safe, use public places the right way</MatBody2>
-                </div>
-                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2 mat-elevation-z16" style="padding: 15px">
-                    <MatBody2>Dress appropriately for the conditions and carry everything you need to keep hydrated</MatBody2>
-                </div>
-                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4 mat-elevation-z16" style="padding: 15px">
-                    <MatBody2>
-                        Follow current social distancing guidelines at all times, please don’t organise any groups that could break social distancing rules.<br />
-                        <MatAnchorLink href="https://www.gov.uk/government/collections/coronavirus-covid-19-list-of-guidance">Keep updated on the current rules and guidelines</MatAnchorLink>
-                    </MatBody2>
+    <MatHidden Breakpoint="MatBreakpoint.MD">
+        <ChildContent>
+            <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+                <div class="mat-layout-grid-inner">
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <source src="img/demo-racers/jpg/DSC_4171.avif" />
+                        <source src="img/demo-racers/jpg/DSC_4171.webp" />
+                        <img src="img/demo-racers/jpg/DSC_4171.jpg" style="width: 100%" />
+                    </picture>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <div class="mat-layout-grid-inner">
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                                <MatH1>Staying safe</MatH1>
+                                <MatBody1>
+                                    When taking on the 10k your safety and others around you is important. We have some advice we would like you to consider to stay safe when taking part
+                                </MatBody1>
+                                <div class="mat-layout-grid-inner">
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2 mat-elevation-z16" style="padding: 15px">
+                                        <MatBody2>Plan your route with caution and make sure that it is legal and safe, use public places the right way</MatBody2>
+                                    </div>
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2 mat-elevation-z16" style="padding: 15px">
+                                        <MatBody2>Dress appropriately for the conditions and carry everything you need to keep hydrated</MatBody2>
+                                    </div>
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4 mat-elevation-z16" style="padding: 15px">
+                                        <MatBody2>
+                                            Follow current social distancing guidelines at all times, please don’t organise any groups that could break social distancing rules.<br />
+                                            <MatAnchorLink href="https://www.gov.uk/government/collections/coronavirus-covid-19-list-of-guidance">Keep updated on the current rules and guidelines</MatAnchorLink>
+                                        </MatBody2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="">
-        </div>
-    </div>
+        </ChildContent>
+        <ElseContent>
+            <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+                <div class="mat-layout-grid-inner">
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <source src="img/demo-racers/jpg/DSC_4171.avif" />
+                        <source src="img/demo-racers/jpg/DSC_4171.webp" />
+                        <img src="img/demo-racers/jpg/DSC_4171.jpg" style="width: 100%" />
+                    </picture>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                        <MatH1>Staying safe</MatH1>
+                        <MatBody1>
+                            When taking on the 10k your safety and others around you is important. We have some advice we would like you to consider to stay safe when taking part
+                        </MatBody1>
+                        <div class="mat-layout-grid-inner">
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2 mat-elevation-z16" style="padding: 15px">
+                                <MatBody2>Plan your route with caution and make sure that it is legal and safe, use public places the right way</MatBody2>
+                            </div>
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2 mat-elevation-z16" style="padding: 15px">
+                                <MatBody2>Dress appropriately for the conditions and carry everything you need to keep hydrated</MatBody2>
+                            </div>
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4 mat-elevation-z16" style="padding: 15px">
+                                <MatBody2>
+                                    Follow current social distancing guidelines at all times, please don’t organise any groups that could break social distancing rules.<br />
+                                    <MatAnchorLink href="https://www.gov.uk/government/collections/coronavirus-covid-19-list-of-guidance">Keep updated on the current rules and guidelines</MatAnchorLink>
+                                </MatBody2>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ElseContent>
+    </MatHidden>
 </article>
