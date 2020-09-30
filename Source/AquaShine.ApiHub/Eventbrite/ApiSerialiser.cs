@@ -90,6 +90,7 @@ namespace AquaShine.ApiHub.Eventbrite
                 BioGender = Enum.Parse<Gender>(attendee.Profile.Gender, true),
                 Email = attendee.Profile.Email!,
                 Name = attendee.Profile.Name!,
+                PartitionKey = "A"
             };
             if (generateId)
             {

@@ -153,8 +153,18 @@
             _submissionDisabled = true;
             _dialogIsOpen = false;
             Toaster.Add("Submitting your result! Don't leave this page yet", MatToastType.Info, "Hold on...", MatIconNames.Error);
-            var initialResponse = await _client.PutAsJsonAsync($"results/{_submissionModel.EntrantId:X}", _submissionModel.InitialRequest);
-            Logger.LogDebug("Server response: {response}", initialResponse);
+            HttpResponseMessage initialResponse;
+            try
+            {
+                initialResponse = await _client.PutAsJsonAsync($"results/{_submissionModel.EntrantId:X}", _submissionModel.InitialRequest);
+                Logger.LogDebug("Server response: {response}", initialResponse);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error during submission");
+                Toaster.Add("Something went wrong submitting your results :(\nTry again later?", MatToastType.Danger, "Error", MatIconNames.Error_outline);
+                return;
+            }
             if (!initialResponse.IsSuccessStatusCode)
             {
                 // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
@@ -185,7 +195,17 @@
             }
 
             Logger.LogInformation("Locking submission");
-            var lockResponse = await _client.PatchAsync($"results/{_submissionModel.EntrantId}/lock", null);
+            HttpResponseMessage lockResponse;
+            try
+            {
+                lockResponse = await _client.PatchAsync($"results/{_submissionModel.EntrantId}/lock", null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error during locking");
+                Toaster.Add("Something went wrong submitting your results :(\nTry again later?", MatToastType.Danger, "Error", MatIconNames.Error_outline);
+                return;
+            }
             Logger.LogDebug("Server response: {response}", lockResponse);
             if (!lockResponse.IsSuccessStatusCode)
             {
@@ -232,8 +252,8 @@
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Verification photo upload failed. Please try again in a few minuets");
-                Toaster.Add("Verification photo failed to upload", MatToastType.Danger, "Upload failed", MatIconNames.Cloud_off);
+                Logger.LogError(ex, "Verification photo failed to upload");
+                Toaster.Add("Verification photo failed to upload. Please try again in a few minuets", MatToastType.Danger, "Upload failed", MatIconNames.Cloud_off);
                 return false;
             }
         });
@@ -255,8 +275,8 @@
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(ex, "Display photo upload failed. Please try again in a few minuets");
-                    Toaster.Add("Display photo failed to upload", MatToastType.Danger, "Upload failed", MatIconNames.Cloud_off);
+                    Logger.LogError(ex, "Display photo failed to upload");
+                    Toaster.Add("Display photo failed to upload. Please try again in a few minuets", MatToastType.Danger, "Upload failed", MatIconNames.Cloud_off);
                     return false;
                 }
             });

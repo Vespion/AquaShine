@@ -22,7 +22,6 @@
         Opened = false;
     }
 }
-
 <MatAppBarContainer>
     <MatAppBar Fixed="true">
         <MatAppBarRow>
@@ -93,9 +92,21 @@
 
             <MatDrawerContent Style="height: initial; position: initial;">
                 <div>
-                    <main style="margin-left: 10px;">
+                    <main style="margin-left: 10px; min-height: 90vh">
                         @Body
                     </main>
+                    <footer class="mat-elevation-z1" style="background-color: #4fb7b6; padding-left: 10px; padding-top: 5px;">
+                        <div class="mat-layout-grid" style="padding: 0px">
+                            <div class="mat-layout-grid-inner">
+                                <div class="mat-layout-grid-cell">
+                                    <MatBody2>&copy; Vespion Softworks; SHSUSAC - 2020</MatBody2>
+                                </div>
+                                <div class="mat-layout-grid-cell">
+                                    <MatAnchorLink href="/privacy">Privacy Policy</MatAnchorLink>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
                     @* ReSharper disable once CssNotResolved *@
                     <!--<footer class="mdc-top-app-bar__row" style="background-color: var(--mdc-theme-primary, #6200ee); flex-direction: column; justify-content: space-between">
 

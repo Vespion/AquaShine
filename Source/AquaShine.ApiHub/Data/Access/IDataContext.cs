@@ -34,6 +34,6 @@ namespace AquaShine.ApiHub.Data.Access
 
         Task Delete(Entrant entrant);
 
-        Task<int> GetTotalSubmissions();
+        Task<int> GetTotalSubmissions(bool? verified);
     }
 }

@@ -41,8 +41,8 @@ namespace AquaShine.ApiFacade
             builder.Services.AddLogging(configure =>
             {
                 configure.SetMinimumLevel(LogLevel.Debug);
-                configure.AddConsole();
-                configure.AddApplicationInsights(configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY"));
+                if (configuration.GetValue<bool?>("EnableConsoleLogs") ?? false) configure.AddConsole();
+                if(!string.IsNullOrWhiteSpace(configuration.GetValue<string?>("APPINSIGHTS_INSTRUMENTATIONKEY"))) configure.AddApplicationInsights(configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY"));
             });
 
             MailChemist.MailChemist.RegisterGlobalTypes();
@@ -80,6 +80,7 @@ namespace AquaShine.ApiFacade
                 //    optionsBuilder.EnableSensitiveDataLogging();
                 //}
                 optionsBuilder.UseLazyLoadingProxies();
+                //optionsBuilder.UseInMemoryDatabase("test1");
                 optionsBuilder.UseNpgsql(configuration.GetConnectionStringOrSetting("MainDb"), provider =>
                 {
                     provider.MigrationsAssembly(typeof(DbDataContext).Assembly.FullName);

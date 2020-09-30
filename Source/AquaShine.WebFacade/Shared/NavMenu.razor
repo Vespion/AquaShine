@@ -1,4 +1,5 @@
-﻿@code
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@code
  {
     /*
      * About the Shsusac 10k
@@ -41,3 +42,13 @@ Chosen charity (Just making sure I put the correct one)
         <MatIcon Icon="@MatIconNames.Verified_user" />&#160;Administration
     </MatButton>
 </MatListItem>
+<AuthorizeView>
+    <Authorized>
+        <MatListGroupSubHeader>Administration Mode</MatListGroupSubHeader>
+        <MatListItem>
+            <MatButton Link="/admin/pending">
+                <MatIcon Icon="@MatIconNames.Check_circle_outline" />&#160;Pending Submissions
+            </MatButton>
+        </MatListItem>
+    </Authorized>
+</AuthorizeView>

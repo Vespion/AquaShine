@@ -1,23 +1,150 @@
 ﻿@page "/"
+@using System.IO
 
 <article>
-    <MatH1>About Us</MatH1>
+    <MatHidden Breakpoint="MatBreakpoint.MD">
+        <ChildContent>
+            <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+                <div class="mat-layout-grid-inner">
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <div class="mat-layout-grid-inner">
+                            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                                <source src="img/club/avif/poolParty.avif" />
+                                <source src="img/club/webp/poolParty.webp" />
+                                <img src="img/club/jpg/poolParty.jpg" style="width: 100%" />
+                            </picture>
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                                <MatH3>Talk to us!</MatH3>
+                                <div class="mat-layout-grid-inner">
+                                    <div class="mat-layout-grid-cell">
+                                        <MatButton Icon="" Link="https://www.facebook.com/shsusac9214/">
+                                            <img src="img/icons/facebook.png"/>
+                                            <MatBody1 style="margin-left: 5px; text-align-all: center"> Facebook</MatBody1>
+                                        </MatButton>
+                                    </div>
+                                    <div class="mat-layout-grid-cell">
+                                        <MatButton Link="https://www.hallamstudentsunion.com/organisation/8676/">
+                                            <img src="img/icons/union.png" height="48"/>
+                                            <MatBody1 style="margin-left: 5px; text-align-all: center"> Hallam Students Union</MatBody1>
+                                        </MatButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <div class="mat-layout-grid-inner">
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                                <MatH1>About Us</MatH1>
+                                <MatBody1>
+                                    Who are we? we are Sheffield Hallam student Union Sub Aqua club or SHSUSAC. We take on people completely new to diving every year. The training we give you will take you to the level of BSAC Ocean Diver, a qualification that you can use anywhere in the world to dive up to 20m. At SHSUSAC we are committed to providing SCUBA training at the cheapest possible price, whilst maintaining the highest standards. To this day we remain one of the cheapest places to learn SCUBA in the United Kingdom.
+                                </MatBody1>
+                            </div>
+                            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                                <source src="img/club/avif/diveBell.avif" />
+                                <source src="img/club/webp/diveBell.webp" />
+                                <img src="img/club/jpg/diveBell.jpg" style="width: 100%" />
+                            </picture>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ChildContent>
+        <ElseContent>
+            <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+                <div class="mat-layout-grid-inner">
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                        <source src="img/club/avif/poolParty.avif" />
+                        <source src="img/club/webp/poolParty.webp" />
+                        <img src="img/club/jpg/poolParty.jpg" style="width: 100%" />
+                    </picture>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                        <MatH1>About Us</MatH1>
+                        <MatBody1>
+                            Who are we? we are Sheffield Hallam student Union Sub Aqua club or SHSUSAC. We take on people completely new to diving every year. The training we give you will take you to the level of BSAC Ocean Diver, a qualification that you can use anywhere in the world to dive up to 20m. At SHSUSAC we are committed to providing SCUBA training at the cheapest possible price, whilst maintaining the highest standards. To this day we remain one of the cheapest places to learn SCUBA in the United Kingdom.
+                        </MatBody1>
+                        </div>
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                        <source src="img/club/avif/diveBell.avif" />
+                        <source src="img/club/webp/diveBell.webp" />
+                        <img src="img/club/jpg/diveBell.jpg" style="width: 100%" />
+                    </picture>
+                    <MatH3>Talk to us!</MatH3>
+                    <div class="mat-layout-grid-inner">
+                        <div class="mat-layout-grid-cell">
+                            <MatButton Link="https://www.facebook.com/shsusac9214/">
+                                <img src="img/icons/facebook.png" />
+                                <MatBody1 style="margin-left: 5px; text-align-all: center"> Facebook</MatBody1>
+                            </MatButton>
+                        </div>
+                        <div class="mat-layout-grid-cell">
+                            <MatButton Link="https://www.hallamstudentsunion.com/organisation/8676/">
+                                <img src="img/icons/union.png" height="48"/>
+                                <MatBody1 style="margin-left: 5px; text-align-all: center"> Hallam Students Union</MatBody1>
+                            </MatButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ElseContent>
+    </MatHidden>
 
-    <MatH3>Img placeholder</MatH3>
+    <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="padding: 10px">
+                <MatH1 style="padding: 10px">About the race</MatH1>
+                <MatBody2 style="padding: 10px">
+                    The Shsusac virtual 10k challenge is a physical activity that requires you to travel 10k on foot this could be done in many ways such as running, walking or you could do it in a creative way such as fancy dress and juggling while walking the distance just make sure you are aware of your surroundings, challenge your friends to see who can do it the fastest.
+                    <hr />
+                    Upon completion of the 10k challenge you will receive the lockdown finishers medal; you will be added to the results table where you can see your time and compare them to others, there are prizes for the fastest male, fastest female and the best selfie.
+                </MatBody2>
+            </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                    <div class="mat-layout-grid-inner">
+                        <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                            <source src="img/demo-racers/avif/DSC_4221.avif" />
+                            <source src="img/demo-racers/webp/DSC_4221.webp" />
+                            <img src="img/demo-racers/jpg/DSC_4221.jpg" style="width: 100%" />
+                        </picture>
+                    </div>
+                </div>
+            </div>
+    </div>
 
-    <MatH1>How it works</MatH1>
-    <MatBody2>
-        To time yourself you will need evidence that you have done the distance and time of completion, we recommend that you use Strava however if you have a smart watch that tracks your distance and records you such as Garmin upload your 10k to the results table and we can verify that it is official with no cheating allowed.
-        You can download Strava here <MatAnchorLink href="https://www.strava.com/">https://www.strava.com/</MatAnchorLink>
-        Share how you did and images on Facebook
-    </MatBody2>
-
-    <MatH3>Img placeholder</MatH3>
-
-    <MatH1>About the race</MatH1>
-    <MatBody2>
-        The shsusac virtual 10k challenge is a physical activity that requires you to travel 10k on foot this could be done in many ways such as running, walking or you could do it in a creative way such as fancy dress and juggling while walking the distance just make sure you are aware of your surroundings, challenge your friends to see who can do it the fastest.
-        Upon completion of the 10k challenge you will receive the lockdown finishers medal; you will be added to the results table where you can see your time and compare them to others, there are prizes for the fastest male, fastest female and the best selfie.
-    </MatBody2>
-
+    <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <MatH2 style="padding: 10px">How it works</MatH2>
+            </div>
+            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <source src="img/demo-racers/avif/DSC_3848.avif"/>
+                <source src="img/demo-racers/webp/DSC_3848.webp"/>
+                <img src="img/demo-racers/jpg/DSC_3848.jpg" style="width: 100%"/>
+            </picture>
+            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <source src="img/demo-racers/avif/DSC_3880.avif"/>
+                <source src="img/demo-racers/webp/DSC_3880.webp"/>
+                <img src="img/demo-racers/jpg/DSC_3880.jpg" style="width: 100%"/>
+            </picture>
+            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <source src="img/demo-racers/avif/DSC_4153.avif"/>
+                <source src="img/demo-racers/webp/DSC_4153.webp"/>
+                <img src="img/demo-racers/jpg/DSC_4153.jpg" style="width: 100%"/>
+            </picture>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <MatBody2 style="padding: 10px">
+                    To time yourself you will need evidence that you have done the distance and time of completion, we recommend that you use Strava however if you have a smart watch that tracks your distance and records you such as Garmin upload your 10k to the results table and we can verify that it is official with no cheating allowed.
+                    You can download Strava here <MatAnchorLink href="https://www.strava.com/">https://www.strava.com/</MatAnchorLink>
+                    Share how you did and images on Facebook
+                </MatBody2>
+                <div class="mat-layout-grid-inner">
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-3">
+                        <source src="img/howitworks/avif/Picture1.avif" />
+                        <source src="img/howitworks/webp/Picture1.webp" />
+                        <img src="img/howitworks/jpg/Picture1.jpg" style="width: 100%" />
+                    </picture>
+                </div>
+            </div>
+        </div>
+    </div>
 </article>

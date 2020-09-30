@@ -200,11 +200,18 @@ namespace AquaShine.ApiHub.Data.Access
             await MergeWithStore(entrant).ConfigureAwait(false);
         }
 
-        public async Task<int> GetTotalSubmissions()
+        public async Task<int> GetTotalSubmissions(bool? verified)
         {
             var query = _entrantTable.CreateQuery<Entrant>().AsQueryable();
-
-            query = query.Where(x => x.Submission != null && x.Submission.Locked);
+            if (verified.HasValue)
+            {
+                query = query.Where(x => x.Submission != null && x.Submission.Locked && x.Submission.Verified == verified);
+            }
+            else
+            {
+                query = query.Where(x => x.Submission != null && x.Submission.Locked);
+            }
+            
 
             TableQuerySegment<Entrant>? querySegment = null;
             var count = 0;

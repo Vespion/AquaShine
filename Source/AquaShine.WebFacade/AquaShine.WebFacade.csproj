@@ -6,6 +6,8 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <Nullable>enable</Nullable>
+    <UserSecretsId>8a931bd4-accf-4b53-a34b-1ac9a9f6c444</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/fb61c7a1-5b6e-4507-856f-8a1ddafb6056/resourceGroups/AquaShine/providers/microsoft.insights/components/AquaShine-ApiFacade</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,11 +15,17 @@
     <PackageReference Include="Blazor.Extensions.Logging" Version="1.1.1" />
     <PackageReference Include="BlazorStrap" Version="1.3.2" />
     <PackageReference Include="MatBlazor" Version="2.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.15.0" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <BlazorLinkerDescriptor Include="LinkerConfig.xml" />
   </ItemGroup>
 
   <ItemGroup>

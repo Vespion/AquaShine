@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AquaShine.ApiHub.Data.Models;
 using AquaShine.ApiHub.Eventbrite.Models;
@@ -12,26 +13,30 @@ using Azure.Storage.Sas;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace AquaShine.ApiHub.Data.Access
 {
     public class DbDataContext : DbContext, IDataContext
     {
         private readonly CloudStorageAccount _storageAccount;
+        private readonly ILogger<DbDataContext> _logger;
         public virtual DbSet<Entrant> Entrants { get; set; }
 
         internal virtual DbSet<Submission> Submissions { get; set; }
 
         /// <inheritdoc />
-        public DbDataContext(DbContextOptions<DbDataContext> dbContext, CloudStorageAccount storageAccount) : base(dbContext)
+        public DbDataContext(DbContextOptions<DbDataContext> dbContext, CloudStorageAccount storageAccount, ILogger<DbDataContext> logger) : base(dbContext)
         {
             _storageAccount = storageAccount;
+            _logger = logger;
         }
 
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Framework method")]
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            _logger.LogDebug("Constructing DB model");
             modelBuilder.Entity<Address>().Property<int>("Id");
             modelBuilder.Entity<Address>().HasKey("Id");
             modelBuilder.Entity<Address>().HasOne<Entrant>().WithOne(x => x.Address).HasForeignKey<Entrant>("AddressId");
@@ -47,12 +52,20 @@ namespace AquaShine.ApiHub.Data.Access
             modelBuilder.Entity<Submission>().HasIndex(x => x.Locked);
             modelBuilder.Entity<Submission>().HasOne<Entrant>().WithOne().HasForeignKey(typeof(Entrant), "EntrantId");
             base.OnModelCreating(modelBuilder);
+            _logger.LogDebug("DB model construction time");
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+        {
+            _logger.LogDebug("Persisting changes to database");
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <inheritdoc />
         public async Task Create(Entrant entrant)
         {
             await Entrants.AddAsync(entrant).ConfigureAwait(false);
+            await SaveChangesAsync();
         }
 
         /// <inheritdoc />
@@ -62,7 +75,7 @@ namespace AquaShine.ApiHub.Data.Access
             {
                 return Task.Run(() =>
                 {
-                    return Entrants.Where(x => x.Submission != null && x.Submission.Verified == verified)
+                    return Entrants.Where(x => x.Submission != null && x.Submission.Verified == verified && !x.Submission.Rejected)
                         .Skip(skip).Take(count)
                         .Include(y => y.Submission).AsEnumerable();
                 });
@@ -76,7 +89,7 @@ namespace AquaShine.ApiHub.Data.Access
         {
             return Task.Run(() =>
             {
-                var query = Entrants.Where(x => x.Submission != null && x.Submission.Locked);
+                var query = Entrants.Where(x => x.Submission != null && x.Submission.Locked && !x.Submission.Rejected);
                 if (verified.HasValue)
                 {
                     query = query.Where(x => x.Submission != null && x.Submission.Verified == verified);
@@ -96,7 +109,7 @@ namespace AquaShine.ApiHub.Data.Access
             }
             return Task.Run(() =>
             {
-                var query = Entrants.Where(x => x.Submission.Locked);
+                var query = Entrants.Where(x => x.Submission.Locked && !x.Submission.Rejected);
                 if (verified.HasValue)
                 {
                     query = query.Where(x => x.Submission.Verified == verified);
@@ -186,8 +199,12 @@ namespace AquaShine.ApiHub.Data.Access
             await SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public Task<int> GetTotalSubmissions()
+        public Task<int> GetTotalSubmissions(bool? verified)
         {
+            if (verified.HasValue)
+            {
+                return Entrants.Where(x => x.Submission != null && x.Submission.Locked && x.Submission.Verified == verified).CountAsync();
+            }
             return Entrants.Where(x => x.Submission != null && x.Submission.Locked).CountAsync();
         }
     }
