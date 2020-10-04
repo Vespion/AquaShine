@@ -31,7 +31,7 @@
                                     <div class="mat-layout-grid-cell">
                                         <MatButton Link="mailto:information@shusac.org.uk">
                                             <MatIcon Icon="@MatIconNames.Email"/>
-                                            <MatBody1 style="margin-left: 5px; text-align-all: center"> Hallam Students Union</MatBody1>
+                                            <MatBody1 style="margin-left: 5px; text-align-all: center"> Email</MatBody1>
                                         </MatButton>
                                     </div>
                                 </div>
@@ -89,6 +89,12 @@
                                 <MatBody1 style="margin-left: 5px; text-align-all: center"> Hallam Students Union</MatBody1>
                             </MatButton>
                         </div>
+                        <div class="mat-layout-grid-cell">
+                            <MatButton Link="mailto:information@shusac.org.uk">
+                                <MatIcon Icon="@MatIconNames.Email"/>
+                                <MatBody1 style="margin-left: 5px; text-align-all: center"> Email</MatBody1>
+                            </MatButton>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,6 +110,24 @@
                     <hr />
                     Upon completion of the 10k challenge you will receive the lockdown finishers medal; you will be added to the results table where you can see your time and compare them to others, there are prizes for the fastest male, fastest female and the best selfie.
                 </MatBody2>
+                <!-- You can customize this button any way you like -->
+                <MatButton id="eventbrite-widget-modal-trigger-123994935189" type="button">Click here to enter</MatButton>
+
+                <ClientScript type="text/javascript">
+                    <script>
+                        var exampleCallback = function() {
+                            console.log('Order complete!');
+                        };
+
+                        window.EBWidgets.createWidget({
+                            widgetType: 'checkout',
+                            eventId: '123994935189',
+                            modal: true,
+                            modalTriggerElementId: 'eventbrite-widget-modal-trigger-123994935189',
+                            onOrderComplete: exampleCallback
+                        });
+                    </script>
+                </ClientScript>
             </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
                     <div class="mat-layout-grid-inner">

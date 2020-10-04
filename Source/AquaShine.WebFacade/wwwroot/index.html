@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>AquaShine.WebFacade</title>
+    <title>SHSUSAC 10K</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/img/favi/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favi/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/favi/favicon-16x16.png">
@@ -21,8 +21,28 @@
         @font-face {
             font-display: swap
         }
+
+        #blazor-error-ui {
+            background: lightyellow;
+            bottom: 0;
+            box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+            display: none;
+            left: 0;
+            padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        #blazor-error-ui .dismiss {
+            cursor: pointer;
+            position: absolute;
+            right: 0.75rem;
+            top: 0.5rem;
+        }
     </style>
-    <link rel="preload" as="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"/>
+    <link rel="preload" as="style" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"/>
+    <link rel="preload" as="style" type="text/css" href="css/rain.css"/>
     <script src="_content/BlazorStrap/blazorStrap.js" async defer></script>
     <!--<script>
         // Picture element HTML5 shiv
@@ -38,52 +58,174 @@
 </head>
 
 <body>
-<app>
-    <style>
-        .preloader {
-            -ms-align-items: center;
-            -o-align-items: center;
-            -webkit-align-items: center;
-            align-items: center;
-            background: rgb(23, 22, 22);
-            display: flex;
-            height: 100vh;
-            -o-justify-content: center;
-            -webkit-justify-content: center;
-            justify-content: center;
-            left: 0;
-            position: fixed;
-            top: 0;
-            -ms-transition: opacity 0.3s linear;
-            -o-transition: opacity 0.3s linear;
-            -webkit-transition: opacity 0.3s linear;
-            transition: opacity 0.3s linear;
-            width: 100%;
-            z-index: 9999;
-        }
-    </style>
-    <div class="preloader">
-        <img src="/img/spinner.svg" alt="spinner">
-        <noscript>
-            <h2>JavaScript is disabled</h2>
-            <h3>Performance and/or functionality may be impacted</h3>
-            <p>
-                Here are the
-                <a href="https://www.enable-javascript.com/">
-                    instructions on how to enable JavaScript in your web browser
-                </a>.
-            </p>
-        </noscript>
-    </div>
-</app>
 
-    <!-- <div id="blazor-error-ui"> -->
-    <!--     An unhandled error has occurred. -->
-    <!--     <a href="" class="reload">Reload</a> -->
-    <!--     <a class="dismiss">🗙</a> -->
-<!-- </div> -->
+    <div id="blazor-error-ui">
+        <p style="font-weight: 700">Huh</p>
+        <p>
+            That wasn't supposed to happen!<br/>
+            Try reloading the page.<br/>
+            Or, if that doesn't work, contact us.
+        </p>
+    </div>
+
+    <app>
+        <div class="container">
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="rain">
+                <div class="drop"></div>
+                <div class="waves">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="splash"></div>
+                <div class="particles">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <article class="message-container">
+                <h1>Loading...</h1>
+                <noscript>
+                    <h2>JavaScript is disabled</h2>
+                    <h3>Performance and/or functionality may be impacted</h3>
+                    <p>
+                        Here are the
+                        <a href="https://www.enable-javascript.com/">
+                            instructions on how to enable JavaScript in your web browser
+                        </a>.
+                    </p>
+                </noscript>
+            </article>
+        </div>
+
+        
+    </app>
+
+
     <script src="_framework/blazor.webassembly.js" async defer></script>
     <script src="_content/MatBlazor/dist/matBlazor.js" async defer></script>
     <script async defer>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="https://www.eventbrite.co.uk/static/widgets/eb_widgets.js" async defer></script>
 </body>
 </html>

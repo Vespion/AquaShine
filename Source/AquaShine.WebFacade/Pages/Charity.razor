@@ -1,5 +1,54 @@
 ﻿@page "/charity"
 
 <article>
-    <MatH1>Charity</MatH1>
+    <MatHidden Breakpoint="MatBreakpoint.MD">
+        <ChildContent>
+            <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+                <div class="mat-layout-grid-inner">
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <div class="mat-layout-grid-inner">
+                            <iframe src="https://www.justgiving.com/crowdfunding/sustainablefishingproject?utm_term=npPv93z84">
+
+                            </iframe>
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                                <div class="mat-layout-grid-inner">
+                                    <!--Left under section-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <div class="mat-layout-grid-inner">
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                                <MatH1>Charity</MatH1>
+                                <MatBody1>
+                                    We're working with <MatAnchorLink href="https://lovetheoceans.org/">Love The Oceans</MatAnchorLink> and their sustainable fishing project!
+                                </MatBody1>
+                            </div>
+                            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                                <source src="img/charity/avif/n2gtFVYA.avif" />
+                                <source src="img/charity/webp/n2gtFVYA.webp" />
+                                <img src="img/charity/jpg/n2gtFVYA.jpeg" style="width: 100%" />
+                            </picture>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ChildContent>
+        <ElseContent>
+            <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+                <div class="mat-layout-grid-inner">
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                        <MatH1>Charity</MatH1>
+                        <MatBody1>
+                            We're working with <MatAnchorLink href="https://lovetheoceans.org/">Love The Oceans</MatAnchorLink> and their sustainable fishing project!
+                        </MatBody1>
+                    </div>
+                    <iframe src="https://www.justgiving.com/crowdfunding/sustainablefishingproject?utm_term=npPv93z84">
+
+                    </iframe>
+                </div>
+            </div>
+        </ElseContent>
+    </MatHidden>
 </article>

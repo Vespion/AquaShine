@@ -33,14 +33,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\favi\" />
-    <Folder Include="wwwroot\img\race-logo\" />
-    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot/" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\lib\ProgressIndicator\src\H3x.BlazorProgressIndicator\H3x.BlazorProgressIndicator.csproj" />
     <ProjectReference Include="..\AquaShine.WebSupport\AquaShine.WebSupport.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\css\rain.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
