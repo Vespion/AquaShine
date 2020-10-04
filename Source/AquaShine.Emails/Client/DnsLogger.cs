@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DnsClient.Internal;
-using Microsoft.Extensions.DependencyInjection;
+﻿using DnsClient.Internal;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace AquaShine.Emails.Client
 {

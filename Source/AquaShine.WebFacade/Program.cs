@@ -1,17 +1,17 @@
 #define AutoDebugFlag
 
+using AquaShine.WebFacade.Helpers;
+using Blazor.Extensions.Logging;
 using BlazorStrap;
+using H3x.BlazorProgressIndicator;
 using MatBlazor;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AquaShine.WebFacade.Helpers;
-using Blazor.Extensions.Logging;
-using Microsoft.Extensions.Logging;
-using H3x.BlazorProgressIndicator;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace AquaShine.WebFacade
 {
@@ -25,6 +25,7 @@ namespace AquaShine.WebFacade
 //Manually set flag
         public const bool DebugFlag = false;
 #endif
+
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -57,7 +58,6 @@ namespace AquaShine.WebFacade
             builder.Services.AddScoped<AuthenticationStateProvider, CustomStateProvider>();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore(options => { });
-
 
             await builder.Build()
                 .RunAsync();

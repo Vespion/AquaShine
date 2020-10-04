@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AquaShine.Emails.Templates;
+﻿using AquaShine.Emails.Templates;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
+using System;
+using System.Threading.Tasks;
 
 namespace AquaShine.Emails.Client
 {
@@ -45,21 +43,21 @@ namespace AquaShine.Emails.Client
                 _logger.LogTrace("Constructing SmtpClient");
                 using var client = new SmtpClient();
 
-                // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)  
+                // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
                 //client.ServerCertificateValidationCallback = (s, c, h, e) => true;
                 try
                 {
-                     _logger.LogDebug("Smtp client connecting to {targetDomain} on port {port} with ssl flag set to {ssl}",
-                         _config.Value.MailServerAddress, _config.Value.MailServerPort, _config.Value.Tls);
+                    _logger.LogDebug("Smtp client connecting to {targetDomain} on port {port} with ssl flag set to {ssl}",
+                        _config.Value.MailServerAddress, _config.Value.MailServerPort, _config.Value.Tls);
 
-                        await client.ConnectAsync(_config.Value.MailServerAddress, _config.Value.MailServerPort, _config.Value.Tls);
+                    await client.ConnectAsync(_config.Value.MailServerAddress, _config.Value.MailServerPort, _config.Value.Tls);
                 }
                 catch (Exception e)
                 {
                     _logger.LogError(e, "Error connecting to remote mail server");
                 }
 
-                // Note: only needed if the SMTP server requires authentication 
+                // Note: only needed if the SMTP server requires authentication
                 if (!string.IsNullOrWhiteSpace(_config.Value.UserId) || !string.IsNullOrWhiteSpace(_config.Value.UserPassword))
                 {
                     _logger.LogDebug("Auth values not null. Authenticating with server");

@@ -1,10 +1,6 @@
-﻿using System;
-using AquaShine.ApiFacade;
-using AquaShine.ApiFacade.Helpers;
+﻿using AquaShine.ApiFacade;
 using AquaShine.ApiHub.Data.Access;
-using AquaShine.ApiHub.Data.Models;
 using AquaShine.ApiHub.Eventbrite;
-using AquaShine.ApiHub.Eventbrite.Models;
 using AquaShine.Emails.Client;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.WebJobs;
@@ -12,13 +8,12 @@ using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
-using Npgsql;
 using SnowMaker;
+using System;
 
 [assembly: WebJobsStartup(typeof(Startup))]
+
 namespace AquaShine.ApiFacade
 {
     public class Startup : IWebJobsStartup
@@ -42,7 +37,7 @@ namespace AquaShine.ApiFacade
             {
                 configure.SetMinimumLevel(LogLevel.Debug);
                 if (configuration.GetValue<bool?>("EnableConsoleLogs") ?? false) configure.AddConsole();
-                if(!string.IsNullOrWhiteSpace(configuration.GetValue<string?>("APPINSIGHTS_INSTRUMENTATIONKEY"))) configure.AddApplicationInsights(configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY"));
+                if (!string.IsNullOrWhiteSpace(configuration.GetValue<string?>("APPINSIGHTS_INSTRUMENTATIONKEY"))) configure.AddApplicationInsights(configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY"));
             });
 
             MailChemist.MailChemist.RegisterGlobalTypes();
@@ -64,10 +59,10 @@ namespace AquaShine.ApiFacade
                 BatchSize = configuration.GetValue<int>("IdGen:BatchSize"),
                 MaxWriteAttempts = configuration.GetValue<int>("IdGen:MaxWriteAttempts"),
             });
-            
+
             builder.Services.AddHttpClient<ApiClient>();
             builder.Services.AddSingleton<ApiSerialiser>();
-                
+
             builder.Services.Configure<EmailConfig>(configuration.GetSection("Email"));
 
             builder.Services.AddScoped<IMailClient, SmtpRelayClient>();
@@ -120,7 +115,6 @@ namespace AquaShine.ApiFacade
                 //}
                 return context;
             });
-
         }
     }
 }

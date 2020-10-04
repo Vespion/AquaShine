@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AquaShine.Emails.Templates;
+﻿using AquaShine.Emails.Templates;
 using MimeKit;
+using System.Threading.Tasks;
 
 namespace AquaShine.Emails.Client
 {

@@ -33,9 +33,37 @@
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
                 <picture>
-                    <source type="image/avif" srcset="img/race-logo/race-logo.avif">
-                    <source type="image/webp" srcset="img/race-logo/race-logo.webp">
-                    <img width="125" style="margin-top: 20px;" src="img/race-logo/race-logo.png" alt="The SHSUSAC Virtual 10k logo">
+                    <source type="image/avif" sizes="(max-width: 1400px) 100vw, 1400px"
+                            srcset="
+                                img/race-logo/avif/race-logo_c8swa5_c_scale,w_200.avif 200w,
+                                img/race-logo/avif/race-logo_c8swa5_c_scale,w_1020.avif 1020w,
+                                img/race-logo/avif/race-logo_c8swa5_c_scale,w_1400.avif 1400w,
+                                img/race-logo/avif/race-logo_c8swa5_c_scale,w_1400.avif" />
+                    <source type="image/webp" sizes="(max-width: 1400px) 100vw, 1400px"
+                            srcset="
+                                img/race-logo/webp/race-logo/race-logo_alau3b_c_scale,w_200.webp 200w,
+                                img/race-logo/webp/race-logo_alau3b_c_scale,w_667.webp 667w,
+                                img/race-logo/webp/race-logo_alau3b_c_scale,w_1026.webp 1026w,
+                                img/race-logo/webp/race-logo_alau3b_c_scale,w_1327.webp 1327w,
+                                img/race-logo/webp/race-logo_alau3b_c_scale,w_1400.webp 1400w,
+                                img/race-logo/webp/race-logo_alau3b_c_scale,w_1400.webp" />
+                    <img width="125" style="margin-top: 20px;"
+                         sizes="(max-width: 1400px) 100vw, 1400px"
+                         srcset="
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_200.png 200w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_358.png 358w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_488.png 488w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_599.png 599w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_702.png 702w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_805.png 805w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_893.png 893w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_980.png 980w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_1064.png 1064w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_1140.png 1140w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_1218.png 1218w,
+                            img/race-logo/png/race-logo_wheeu2_c_scale,w_1400.png 1400w"
+                         src="img/race-logo/png/race-logo_wheeu2_c_scale,w_1400.png"
+                         alt="The SHSUSAC Virtual 10k logo">
                 </picture>
             </MatAppBarSection>
         </MatAppBarRow>
@@ -44,38 +72,38 @@
     <MatAppBarContent>
         <MatDrawerContainer @onclick="@CloseMenu">
             @*<MatHidden Breakpoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up">
-                <ChildContent>
-                    @{/*This drawer is used when the screen is bigger numpty!*/}
-                    <MatDrawer @bind-Opened="@Opened" Mode="@MatDrawerMode.Modal" Style="height: 100vh; position: fixed;">
-                        <nav>
-                            <MatList>
-                                <MatButton Link="/">
-                                    <MatIcon Icon="@MatIconNames.Home" />&#160;Home
-                                </MatButton>
-                                <MatListDivider />
-                                <NavMenu />
-                            </MatList>
-                        </nav>
-                    </MatDrawer>
-                </ChildContent>
-
-                <ElseContent>
-                    <MatDrawer @bind-Opened="@Opened" Mode="@MatDrawerMode.Dismissible">
-                        <nav>
-                            <MatList>
-                                <MatListItem>
+                    <ChildContent>
+                        @{/*This drawer is used when the screen is bigger numpty!*/}
+                        <MatDrawer @bind-Opened="@Opened" Mode="@MatDrawerMode.Modal" Style="height: 100vh; position: fixed;">
+                            <nav>
+                                <MatList>
                                     <MatButton Link="/">
                                         <MatIcon Icon="@MatIconNames.Home" />&#160;Home
                                     </MatButton>
-                                </MatListItem>
-                                <MatListDivider />
-                                <NavMenu />
-                            </MatList>
-                        </nav>
-                    </MatDrawer>
-                </ElseContent>
-            </MatHidden>*@
-            
+                                    <MatListDivider />
+                                    <NavMenu />
+                                </MatList>
+                            </nav>
+                        </MatDrawer>
+                    </ChildContent>
+
+                    <ElseContent>
+                        <MatDrawer @bind-Opened="@Opened" Mode="@MatDrawerMode.Dismissible">
+                            <nav>
+                                <MatList>
+                                    <MatListItem>
+                                        <MatButton Link="/">
+                                            <MatIcon Icon="@MatIconNames.Home" />&#160;Home
+                                        </MatButton>
+                                    </MatListItem>
+                                    <MatListDivider />
+                                    <NavMenu />
+                                </MatList>
+                            </nav>
+                        </MatDrawer>
+                    </ElseContent>
+                </MatHidden>*@
+
             <MatDrawer @bind-Opened="@Opened" Mode="@MatDrawerMode.Modal">
                 <nav>
                     <MatList>
@@ -109,7 +137,6 @@
                     </footer>
                     @* ReSharper disable once CssNotResolved *@
                     <!--<footer class="mdc-top-app-bar__row" style="background-color: var(--mdc-theme-primary, #6200ee); flex-direction: column; justify-content: space-between">
-
                     </footer>-->
                 </div>
             </MatDrawerContent>

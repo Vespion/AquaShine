@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AquaShine.Emails.Templates;
+﻿using AquaShine.Emails.Templates;
 using DnsClient;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AquaShine.Emails.Client
 {
@@ -41,7 +40,7 @@ namespace AquaShine.Emails.Client
                 {
                     const int port = 25;
                     const bool sslFlag = false;
-                    // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)  
+                    // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     try
                     {
@@ -56,8 +55,8 @@ namespace AquaShine.Emails.Client
                         continue;
                     }
 
-                    // Note: only needed if the SMTP server requires authentication  
-                    //client.Authenticate("joey", "password");  
+                    // Note: only needed if the SMTP server requires authentication
+                    //client.Authenticate("joey", "password");
                     try
                     {
                         _logger.LogInformation("Sending email to target server @ {server}", targetMailServerDomain);
@@ -70,11 +69,10 @@ namespace AquaShine.Emails.Client
 
                     _logger.LogInformation("Disconnecting from mail server");
                     await client.DisconnectAsync(true);
-                    break; // assuming we get to this point, we have sent the message... else will fail  
+                    break; // assuming we get to this point, we have sent the message... else will fail
                 }
             }
         }
-        
 
         private async Task<MimeMessage> ConstructMessage<TMessage>(TMessage message, MailboxAddress sender, MailboxAddress target) where TMessage : IEmailMessage
         {

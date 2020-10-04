@@ -1,6 +1,6 @@
 {
-  "name": "AquaShine.WebFacade",
-  "short_name": "AquaShine.WebFacade",
+  "name": "SHSUSAC Virtual 10K",
+  "short_name": "SHSUSAC 10K",
   "icons": [
     {
       "src": "/img/favi/android-chrome-192x192.png",
@@ -15,5 +15,6 @@
   ],
   "theme_color": "#189f94",
   "background_color": "#189f94",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "./"
 }

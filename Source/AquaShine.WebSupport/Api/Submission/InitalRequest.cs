@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace AquaShine.WebSupport.Api.Submission
@@ -8,7 +6,7 @@ namespace AquaShine.WebSupport.Api.Submission
     public class InitalRequest
     {
         [JsonConverter(typeof(JsonTimeSpanConverter))]
-        public TimeSpan TimeTaken => (TimeSpan) TimeSpan;
+        public TimeSpan TimeTaken => (TimeSpan)TimeSpan;
 
         [JsonIgnore]
         public EditableTimeSpan TimeSpan { get; set; } = new EditableTimeSpan();

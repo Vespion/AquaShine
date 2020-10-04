@@ -1,26 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 using AquaShine.ApiFacade.Helpers;
 using AquaShine.ApiHub.Data.Access;
 using AquaShine.ApiHub.Data.Models;
 using AquaShine.WebSupport.Api.DataTable;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AquaShine.ApiFacade.Surface
 {
     public class DataQuery
     {
         private readonly IDataContext _context;
+
         public DataQuery(IDataContext context)
         {
             _context = context;
@@ -105,7 +100,7 @@ namespace AquaShine.ApiFacade.Surface
                     webEntrant.Submission!.Position = posCounter;
                     result.Add(webEntrant);
                 }
-                
+
                 posCounter++;
             }
 

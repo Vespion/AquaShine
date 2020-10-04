@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MailChemist.Core.Attributes;
+﻿using MailChemist.Core.Attributes;
 using MailChemist.Providers;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AquaShine.Emails.Templates
 {
@@ -46,6 +44,7 @@ namespace AquaShine.Emails.Templates
     public interface IEmailMessage
     {
         string Subject { get; set; }
+
         Task<string> Generate();
     }
 }

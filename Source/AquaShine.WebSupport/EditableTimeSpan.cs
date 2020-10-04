@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace AquaShine.WebSupport
 {
     public class EditableTimeSpan : INotifyPropertyChanged
     {
-        TimeSpan _timespan;
+        private TimeSpan _timespan;
 
         public TimeSpan TimeSpan
         {
             get { return _timespan; }
             set { _timespan = value; FireAll(); }
         }
+
         public int Hours
         {
             get { return TimeSpan.Hours; }
@@ -26,6 +25,7 @@ namespace AquaShine.WebSupport
                 }
             }
         }
+
         public int Minutes
         {
             get { return TimeSpan.Minutes; }
@@ -38,6 +38,7 @@ namespace AquaShine.WebSupport
                 }
             }
         }
+
         public int Seconds
         {
             get { return TimeSpan.Seconds; }
@@ -73,11 +74,13 @@ namespace AquaShine.WebSupport
                 FireAll();
             }
         }
+
         public static explicit operator TimeSpan(EditableTimeSpan ets)
         {
             return ets.TimeSpan;
         }
-        void FireAll()
+
+        private void FireAll()
         {
             if (PropertyChanged != null)
             {
@@ -88,11 +91,14 @@ namespace AquaShine.WebSupport
                 PropertyChanged(this, MiliSecondsArgs);
             }
         }
+
         public static explicit operator EditableTimeSpan(TimeSpan ets)
         {
             return new EditableTimeSpan(ets);
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         private PropertyChangedEventArgs MinutesArgs = new PropertyChangedEventArgs("Minutes");
         private PropertyChangedEventArgs TotalSecondsArgs = new PropertyChangedEventArgs("TotalSeconds");
         private PropertyChangedEventArgs SecondsArgs = new PropertyChangedEventArgs("Seconds");
@@ -103,14 +109,17 @@ namespace AquaShine.WebSupport
         {
             return TimeSpan.ToString();
         }
+
         public string ToString(string format)
         {
             return TimeSpan.ToString(format);
         }
+
         public EditableTimeSpan()
         {
             _timespan = new TimeSpan();
         }
+
         public EditableTimeSpan(TimeSpan timeSpan)
         {
             _timespan = timeSpan;

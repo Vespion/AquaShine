@@ -1,6 +1,7 @@
 ﻿using AquaShine.ApiHub.Data.Models;
 using Azure.Storage;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Cosmos.Table.Queryable;
@@ -9,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Azure.Storage.Blobs.Models;
 using CloudStorageAccount = Microsoft.Azure.Storage.CloudStorageAccount;
 
 namespace AquaShine.ApiHub.Data.Access
@@ -211,7 +211,6 @@ namespace AquaShine.ApiHub.Data.Access
             {
                 query = query.Where(x => x.Submission != null && x.Submission.Locked);
             }
-            
 
             TableQuerySegment<Entrant>? querySegment = null;
             var count = 0;

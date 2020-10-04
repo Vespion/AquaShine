@@ -8,7 +8,6 @@
 @inject IMatToaster Toaster
 @inject IIndicatorService IndicatorService
 @inject NavigationManager NavigationManager
-
 @* ReSharper disable UnknownCssClass *@
 <article class="mat-layout-grid">
     <MatH1>Results</MatH1>
@@ -95,10 +94,10 @@
             }
             else
             {
-        <section class="mat-layout-grid-cell-span-6">
-            @* ReSharper disable once CommentTypo *@
-            <!--Placeholder to keep Paginator on the second row-->
-        </section>
+                <section class="mat-layout-grid-cell-span-6">
+                    @* ReSharper disable once CommentTypo *@
+                    <!--Placeholder to keep Paginator on the second row-->
+                </section>
             }
             <nav class="mat-layout-grid-cell-span-6">
                 <MatPaginator Length="@_totalLength" PageSize="5" Page="@OnPage"></MatPaginator>
@@ -109,7 +108,7 @@
 </article>
 
 @code{
-   
+
     readonly List<Entrant> _items = new List<Entrant>();
     HttpClient _client = null!;
 

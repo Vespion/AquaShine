@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AquaShine.ApiHub.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AquaShine.ApiHub.Data.Models;
 
 namespace AquaShine.ApiHub.Data.Access
 {

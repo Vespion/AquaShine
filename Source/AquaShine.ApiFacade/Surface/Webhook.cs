@@ -1,23 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Net.Mail;
-using System.Threading.Tasks;
 using AquaShine.ApiHub.Data.Access;
 using AquaShine.ApiHub.Data.Models;
 using AquaShine.ApiHub.Eventbrite;
 using AquaShine.ApiHub.Eventbrite.Models;
 using AquaShine.Emails.Client;
 using AquaShine.Emails.Templates;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Newtonsoft.Json;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AquaShine.ApiFacade.Surface
 {
@@ -88,7 +85,7 @@ namespace AquaShine.ApiFacade.Surface
             var azureRoot = $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot";
 
             var actualRoot = localRoot ?? azureRoot;
-            var msg = new EntrantCreated(Path.Combine(actualRoot, "Compiled")) {Subject = "Thanks for joining! Here's your number"};
+            var msg = new EntrantCreated(Path.Combine(actualRoot, "Compiled")) { Subject = "Thanks for joining! Here's your number" };
             msg.EmailVariables.FirstName = entrant.Name;
             msg.EmailVariables.EntrantNum = long.Parse(entrant.RowKey, NumberStyles.HexNumber, new NumberFormatInfo());
             return msg;

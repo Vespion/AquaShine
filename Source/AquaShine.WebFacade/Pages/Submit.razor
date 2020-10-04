@@ -39,8 +39,8 @@
                         <MatNumericUpDownField TValue="int" DecimalPlaces="0" Minimum="0" Outlined="true" Label="Seconds" PlaceHolder="21" @bind-Value="_submissionModel.InitialRequest.TimeSpan.Seconds" />
                     </div>
                     @*<div class="mat-layout-grid-cell">
-                        <MatNumericUpDownField TValue="int" DecimalPlaces="0" Minimum="0" Outlined="true" Label="Miliseconds" PlaceHolder="26" @bind-Value="_submissionModel.InitialRequest.TimeSpan.MiliSeconds" />
-                    </div>*@
+                            <MatNumericUpDownField TValue="int" DecimalPlaces="0" Minimum="0" Outlined="true" Label="Miliseconds" PlaceHolder="26" @bind-Value="_submissionModel.InitialRequest.TimeSpan.MiliSeconds" />
+                        </div>*@
                 </div>
             </div>
         </section>
@@ -52,7 +52,6 @@
                     <MatHelperText HelperTextPersistent="true"
                                    HelperText="If you don't want your result publicly visible disable this option.
                                    Admins will still be able to see your submission" />
-
                 </div>
                 <div class="mat-layout-grid-cell">
                     <MatStringField @bind-Value="_submissionModel.InitialRequest.DisplayName" Label="Display Name" Outlined="true"
@@ -77,12 +76,12 @@
                             </MatBody2>
                         </div>
                     </div>
-                    </div>
-                    <div class="mat-layout-grid-cell">
-                        <MatFileUpload Attributes="@_fileUploadAttributes" OnChange="@DisplayUploaderChanged"
-                                       Label="Drag and drop here or browse for an image to display with your results (optional)"></MatFileUpload>
-                    </div>
                 </div>
+                <div class="mat-layout-grid-cell">
+                    <MatFileUpload Attributes="@_fileUploadAttributes" OnChange="@DisplayUploaderChanged"
+                                   Label="Drag and drop here or browse for an image to display with your results (optional)"></MatFileUpload>
+                </div>
+            </div>
         </section>
         <section class="group-border mat-layout-grid-cell mat-layout-grid-cell-span-12 mat-elevation-z2">
             <MatH2>Submit</MatH2>
@@ -111,7 +110,6 @@
         </MatDialogActions>
     </MatDialog>
 </article>
-
 
 @code {
 
@@ -188,7 +186,7 @@
             }
 
             Logger.LogInformation("Uploading blobs");
-            var uploadUris = await JsonSerializer.DeserializeAsync<InitalResponse>(await initialResponse.Content.ReadAsStreamAsync(), new JsonSerializerOptions{PropertyNameCaseInsensitive = true});
+            var uploadUris = await JsonSerializer.DeserializeAsync<InitalResponse>(await initialResponse.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             Logger.LogDebug("Server response: DisplayUri: {display}, VerifyUri: {verify}",
                 uploadUris.DisplayUri, uploadUris.VerificationUri);
             var uploadResult = await UploadBlobs(uploadUris);
@@ -288,7 +286,7 @@
         {
             displayTask = Task.FromResult(true);
         }
-        return (await Task.WhenAll(new List<Task<bool>>{displayTask, verifyTask})).All(taskResults => taskResults);
+        return (await Task.WhenAll(new List<Task<bool>> { displayTask, verifyTask })).All(taskResults => taskResults);
     }
 
     protected override void OnAfterRender(bool firstRender)

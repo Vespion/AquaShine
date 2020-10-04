@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AquaShine.WebSupport;
+﻿using AquaShine.WebSupport;
+using System;
 using Entrant = AquaShine.ApiHub.Data.Models.Entrant;
 
 namespace AquaShine.ApiFacade.Helpers

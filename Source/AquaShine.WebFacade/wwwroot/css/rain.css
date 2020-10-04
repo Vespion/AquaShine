@@ -84,7 +84,7 @@
     }
 
 .drop {
-    background-color: var(--mdc-theme-primary, #6200ee);
+    background-color: #189f94;
     width: 3px;
     height: 100px;
     position: absolute;
@@ -98,7 +98,7 @@
     animation-fill-mode: backwards;
 }
 
-@@keyframes fall {
+@keyframes fall {
     0% {
         transform: translateY(-120vh);
     }
@@ -124,7 +124,7 @@
     right: 0px;
     bottom: 0px;
     border-radius: 50%;
-    border: solid var(--mdc-theme-primary, #6200ee) 3px;
+    border: solid #189f94 3px;
     animation-name: spread;
     animation-duration: var(--duration);
     animation-delay: var(--delay);
@@ -138,7 +138,7 @@
         animation-timing-function: linear;
     }
 
-@@keyframes spread {
+@keyframes spread {
     0% {
         transform: scale(0);
         opacity: 1;
@@ -155,7 +155,6 @@
     }
 }
 
-
 .splash {
     position: absolute;
     top: 10%;
@@ -164,7 +163,7 @@
     right: 35%;
     border-radius: 8px;
     clip-path: polygon(7% 100%, 5% 95%, 3% 80%, 11% 50%, 17% 38%, 23% 44%, 30% 53%, 37% 28%, 40% 29%, 45% 43%, 51% 53%, 59% 36%, 64% 22%, 67% 23%, 70% 34%, 72% 46%, 79% 37%, 83% 37%, 93% 61%, 96% 76%, 96% 94%, 94% 100%);
-    background-color: var(--mdc-theme-primary, #6200ee);
+    background-color: #189f94;
     transform-origin: bottom;
     animation-name: splash;
     animation-duration: var(--duration);
@@ -174,7 +173,7 @@
     animation-fill-mode: backwards;
 }
 
-@@keyframes splash {
+@keyframes splash {
     0% {
         transform: scale(0.3, 0);
     }
@@ -203,7 +202,7 @@
 .particles > div {
     position: absolute;
     border-radius: 100%;
-    background-color: var(--mdc-theme-primary, #6200ee);
+    background-color: #189f94;
     animation-duration: var(--duration);
     animation-delay: var(--delay);
     animation-iteration-count: infinite;
@@ -246,7 +245,7 @@
         animation-delay: calc(var(--delay) + 0.3s);
     }
 
-@@keyframes jumpLeft {
+@keyframes jumpLeft {
     0% {
         transform: translate(0,0) scale(0);
     }
@@ -264,7 +263,7 @@
     }
 }
 
-@@keyframes jumpRight {
+@keyframes jumpRight {
     0% {
         transform: translate(0,0) scale(0);
     }
