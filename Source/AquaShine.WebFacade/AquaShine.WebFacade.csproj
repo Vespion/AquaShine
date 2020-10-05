@@ -44,10 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot/" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\lib\ProgressIndicator\src\H3x.BlazorProgressIndicator\H3x.BlazorProgressIndicator.csproj" />
     <ProjectReference Include="..\AquaShine.WebSupport\AquaShine.WebSupport.csproj" />
   </ItemGroup>
