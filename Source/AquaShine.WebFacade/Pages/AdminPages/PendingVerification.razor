@@ -1,16 +1,4 @@
-﻿@page "/admin/pending"
-@using AquaShine.WebSupport
-@using H3x.BlazorProgressIndicator
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.Extensions.Logging
-
-@* @attribute [Authorize] *@
-
-@inject IHttpClientFactory ClientFactory
-@inject IMatToaster Toaster
-@inject IIndicatorService IndicatorService
-@inject NavigationManager NavigationManager
-
+﻿@*
 <article>
     <MatHidden Breakpoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up">
         <ChildContent>
@@ -29,13 +17,13 @@
                           SelectionChanged="SelectionChanged">
                     <MatTableHeader>
                         <!--<MatSortHeaderRow>-->
-                        <th>Number</th>
+                        <!--<th>Number</th>
                         <th>Name</th>
-                        <th>Time to complete</th>
+                        <th>Time to complete</th>-->
                         @*<th>Gender</th>
-                            <th>Image</th>*@
-                        <!--</MatSortHeaderRow>-->
-                    </MatTableHeader>
+                            <th>Image</th>
+                        <!--<!--</MatSortHeaderRow>-->
+                    <!--</MatTableHeader>
                     <MatTableRow>
                         <td>@context.Id</td>
                         <td>@context.Name</td>
@@ -45,8 +33,8 @@
                             {
                                 <MatIcon Icon="@MatIconNames.Verified_user" />
                             }
-                        </td>
-                        @*<td>
+                        </td>-->
+                        <td>
                                 <GenderImage Gender="context.BioGender" />
                             </td>
                             <td>
@@ -54,8 +42,8 @@
                                 {
                                     <img height="100" src="@context.Submission.DisplayImgUrl" alt="An uploaded image by the entrant." />
                                 }
-                            </td>*@
-                    </MatTableRow>
+                            </td>
+                    <!--</MatTableRow>
                 </MatTable>
             </section>
             @if (Selected != null)
@@ -105,10 +93,9 @@
             }
             else
             {
-                <section class="mat-layout-grid-cell-span-6">
-                    @* ReSharper disable once CommentTypo *@
-                    <!--Placeholder to keep Paginator on the second row-->
-                </section>
+                <section class="mat-layout-grid-cell-span-6">-->
+                     <!--Placeholder to keep Paginator on the second row-->
+                <!--</section>
             }
             <nav class="mat-layout-grid-cell-span-6">
                 <MatPaginator Length="@_totalLength" PageSize="5" Page="@OnPage"></MatPaginator>
@@ -212,4 +199,4 @@
     private void ApproveHiddenCallback() => HandleCardClick(VerifyMode.ApproveHidden);
     private void RejectCallback() => HandleCardClick(VerifyMode.Reject);
 
-}
+}-->*@
