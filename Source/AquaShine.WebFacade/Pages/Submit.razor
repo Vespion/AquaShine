@@ -1,0 +1,301 @@
+﻿@page "/results/submit"
+@using AquaShine.WebFacade.Helpers
+@using AquaShine.WebSupport.Api.Submission
+@using System.Net
+@using System.Text.Json
+@using Azure.Storage.Blobs
+@using System.IO
+@using Azure.Storage.Blobs.Models
+@using Microsoft.Extensions.Logging
+
+@inject IHttpClientFactory ClientFactory
+@inject IMatToaster Toaster
+@inject ILogger<Submit> Logger
+@inject NavigationManager NavigationManager
+
+<article class="mat-layout-grid">
+    <style>
+        .group-border {
+            margin: 15px;
+            border-color: var(--mdc-theme-primary, #6200ee);
+            border-width: 2px;
+            padding: 5px;
+            border-style: none;
+        }
+    </style>
+    <MatH1>Submit your results</MatH1>
+    <div class="mat-layout-grid-inner mat-elevation-z22">
+        <section class="group-border mat-layout-grid-cell mat-layout-grid-cell-span-12 mat-elevation-z2">
+            <MatH2>Time</MatH2>
+            <div>
+                <div class="mat-layout-grid-inner">
+                    <div class="mat-layout-grid-cell">
+                        <MatNumericUpDownField TValue="int" Minimum="0" Outlined="true" Label="Hours" PlaceHolder="3" @bind-Value="_submissionModel.InitialRequest.TimeSpan.Hours" />
+                    </div>
+                    <div class="mat-layout-grid-cell">
+                        <MatNumericUpDownField TValue="int" Minimum="0" Outlined="true" Label="Minutes" PlaceHolder="12" @bind-Value="_submissionModel.InitialRequest.TimeSpan.Minutes" />
+                    </div>
+                    <div class="mat-layout-grid-cell">
+                        <MatNumericUpDownField TValue="int" DecimalPlaces="0" Minimum="0" Outlined="true" Label="Seconds" PlaceHolder="21" @bind-Value="_submissionModel.InitialRequest.TimeSpan.Seconds" />
+                    </div>
+                    @*<div class="mat-layout-grid-cell">
+                            <MatNumericUpDownField TValue="int" DecimalPlaces="0" Minimum="0" Outlined="true" Label="Miliseconds" PlaceHolder="26" @bind-Value="_submissionModel.InitialRequest.TimeSpan.MiliSeconds" />
+                        </div>*@
+                </div>
+            </div>
+        </section>
+        <section class="group-border mat-layout-grid-cell mat-layout-grid-cell-span-12 mat-elevation-z2">
+            <MatH2>Privacy controls</MatH2>
+            <div class="mat-layout-grid-inner">
+                <div class="mat-layout-grid-cell">
+                    <MatSlideToggle @bind-Value="_submissionModel.InitialRequest.Public" Label="Show publicly?" />
+                    <MatHelperText HelperTextPersistent="true"
+                                   HelperText="If you don't want your result publicly visible disable this option.
+                                   Admins will still be able to see your submission" />
+                </div>
+                <div class="mat-layout-grid-cell">
+                    <MatStringField @bind-Value="_submissionModel.InitialRequest.DisplayName" Label="Display Name" Outlined="true"
+                                    HelperTextPersistent="true"
+                                    HelperText="The name here is used instead of your real name when your result is shown" />
+                </div>
+            </div>
+        </section>
+        <section class="group-border mat-layout-grid-cell mat-layout-grid-cell-span-12 mat-elevation-z2">
+            <MatH2>Image uploads</MatH2>
+            <div class="mat-layout-grid-inner">
+                <div class="mat-layout-grid-cell">
+                    <div class="mat-layout-grid-inner">
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                            <MatFileUpload Attributes="@_fileUploadAttributes" OnChange="@VerificationUploaderChanged"
+                                           Label="Drag and drop here or browse for an image to use for verification"></MatFileUpload>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                            <MatBody2>
+                                I'll probably get around to adding image previews....at some point....probably?
+                                - Vesp
+                            </MatBody2>
+                        </div>
+                    </div>
+                </div>
+                <div class="mat-layout-grid-cell">
+                    <MatFileUpload Attributes="@_fileUploadAttributes" OnChange="@DisplayUploaderChanged"
+                                   Label="Drag and drop here or browse for an image to display with your results (optional)"></MatFileUpload>
+                </div>
+            </div>
+        </section>
+        <section class="group-border mat-layout-grid-cell mat-layout-grid-cell-span-12 mat-elevation-z2">
+            <MatH2>Submit</MatH2>
+            <div class="mat-layout-grid-inner">
+                <div class="mat-layout-grid-cell">
+                    <MatTextField TValue="long?" @bind-Value="_submissionModel.EntrantId" Outlined="true" Required="true"
+                                  HelperTextPersistent="true" HelperText="Your entry number. Check your emails or contact us if you don't have one" />
+                </div>
+                <div class="mat-layout-grid-cell">
+                    <MatIconButton Disabled="@_submissionDisabled" Icon="@MatIconNames.Send" OnClick="@(() => { _dialogIsOpen = true; })">
+                        @*<MatBody1>Submit</MatBody1>*@
+                    </MatIconButton>
+                </div>
+            </div>
+        </section>
+    </div>
+    <MatDialog @bind-IsOpen="@_dialogIsOpen">
+        <MatDialogTitle>Confirm submission</MatDialogTitle>
+        <MatDialogContent>
+            <MatBody1>Are you sure?</MatBody1>
+            <MatBody2>Once you submit your time you won't be able to resubmit!</MatBody2>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(() => { _dialogIsOpen = false; })">No Thanks</MatButton>
+            <MatButton OnClick="@ConfirmSubmission">Yes please!</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</article>
+
+@code {
+
+    private bool _dialogIsOpen;
+
+    private bool _submissionDisabled;
+
+    private HttpClient _client;
+
+    readonly ResultsSubmissionModel _submissionModel = new ResultsSubmissionModel
+    {
+        InitialRequest = new InitalRequest()
+    };
+
+    private readonly Dictionary<string, object> _fileUploadAttributes = new Dictionary<string, object>
+{
+        {"accept", "image/*"}
+    };
+
+    private void VerificationUploaderChanged(IMatFileUploadEntry[] arg)
+    {
+        var file = arg[0];
+        _submissionModel.VerificationFileEntry = file;
+    }
+
+    private void DisplayUploaderChanged(IMatFileUploadEntry[] arg)
+    {
+        IMatFileUploadEntry? file = null;
+        if (arg.Length > 0)
+        {
+            file = arg[0];
+        }
+        _submissionModel.DisplayFileEntry = file;
+        _submissionModel.InitialRequest.GenerateDisplayImg = file != null;
+    }
+
+    private async Task ConfirmSubmission()
+    {
+        try
+        {
+            Logger.LogInformation("Starting submission");
+            _submissionDisabled = true;
+            _dialogIsOpen = false;
+            Toaster.Add("Submitting your result! Don't leave this page yet", MatToastType.Info, "Hold on...", MatIconNames.Error);
+            HttpResponseMessage initialResponse;
+            try
+            {
+                initialResponse = await _client.PutAsJsonAsync($"results/{_submissionModel.EntrantId:X}", _submissionModel.InitialRequest);
+                Logger.LogDebug("Server response: {response}", initialResponse);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error during submission");
+                Toaster.Add("Something went wrong submitting your results :(\nTry again later?", MatToastType.Danger, "Error", MatIconNames.Error_outline);
+                return;
+            }
+            if (!initialResponse.IsSuccessStatusCode)
+            {
+                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+                switch (initialResponse.StatusCode)
+                {
+                    case HttpStatusCode.Locked:
+                        Toaster.Add("A submission has already been made for this ID." + Environment.NewLine +
+                                    "If you think this is wrong please contact us.", MatToastType.Danger, "Submission Locked", MatIconNames.Lock);
+                        return;
+                    case HttpStatusCode.NotFound:
+                        Toaster.Add("Couldn't find that entry number. Are you sure it exists?", MatToastType.Danger, "Not Found", MatIconNames.Warning);
+                        return;
+                    default:
+                        Toaster.Add("An unknown error has occurred." + Environment.NewLine
+                                    + $"HTTP Code: {initialResponse.StatusCode}", MatToastType.Danger, "Error", MatIconNames.Error);
+                        return;
+                }
+            }
+
+            Logger.LogInformation("Uploading blobs");
+            var uploadUris = await JsonSerializer.DeserializeAsync<InitalResponse>(await initialResponse.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            Logger.LogDebug("Server response: DisplayUri: {display}, VerifyUri: {verify}",
+                uploadUris.DisplayUri, uploadUris.VerificationUri);
+            var uploadResult = await UploadBlobs(uploadUris);
+            if (!uploadResult)
+            {
+                return;
+            }
+
+            Logger.LogInformation("Locking submission");
+            HttpResponseMessage lockResponse;
+            try
+            {
+                lockResponse = await _client.PatchAsync($"results/{_submissionModel.EntrantId}/lock", null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error during locking");
+                Toaster.Add("Something went wrong submitting your results :(\nTry again later?", MatToastType.Danger, "Error", MatIconNames.Error_outline);
+                return;
+            }
+            Logger.LogDebug("Server response: {response}", lockResponse);
+            if (!lockResponse.IsSuccessStatusCode)
+            {
+                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+                switch (lockResponse.StatusCode)
+                {
+                    case HttpStatusCode.Locked:
+                        Toaster.Add("A submission has already been made for this ID." + Environment.NewLine +
+                                    "If you think this is wrong please contact us.", MatToastType.Danger, "Submission Locked", MatIconNames.Lock);
+                        return;
+                    case HttpStatusCode.NotFound:
+                        Toaster.Add("Couldn't find that entry number. Are you sure it exists?", MatToastType.Danger, "Not Found", MatIconNames.Warning);
+                        return;
+                    default:
+                        Toaster.Add("An unknown error has occurred." + Environment.NewLine
+                                    + $"HTTP Code: {initialResponse.StatusCode}", MatToastType.Danger, "Error", MatIconNames.Error);
+                        return;
+                }
+            }
+            Logger.LogInformation("Submission complete");
+            Toaster.Add("Your result has been submitted! :D", MatToastType.Success, "All done!", MatIconNames.Sentiment_very_satisfied);
+            NavigationManager.NavigateTo("results");
+        }
+        finally
+        {
+            _submissionDisabled = false;
+        }
+    }
+
+    private async Task<bool> UploadBlobs(InitalResponse uploadUris)
+    {
+        var verifyTask = Task.Run(async () =>
+        {
+            try
+            {
+                var blobClient = new BlobClient(uploadUris.VerificationUri);
+                await using var memStream = new MemoryStream();
+                await _submissionModel.VerificationFileEntry.WriteToStreamAsync(memStream);
+                memStream.Position = 0;
+                await blobClient.DeleteIfExistsAsync();
+                await blobClient.UploadAsync(memStream);
+                Toaster.Add("Uploaded your verification photo successfully", MatToastType.Success, "Upload complete", MatIconNames.Cloud_done);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Verification photo failed to upload");
+                Toaster.Add("Verification photo failed to upload. Please try again in a few minuets", MatToastType.Danger, "Upload failed", MatIconNames.Cloud_off);
+                return false;
+            }
+        });
+        Task<bool> displayTask;
+        if (_submissionModel.InitialRequest.GenerateDisplayImg && uploadUris.DisplayUri != null)
+        {
+            displayTask = Task.Run(async () =>
+            {
+                try
+                {
+                    var blobClient = new BlobClient(uploadUris.VerificationUri);
+                    await using var memStream = new MemoryStream();
+                    await _submissionModel.VerificationFileEntry.WriteToStreamAsync(memStream);
+                    memStream.Position = 0;
+                    await blobClient.DeleteIfExistsAsync();
+                    await blobClient.UploadAsync(memStream);
+                    Toaster.Add("Uploaded your display photo successfully", MatToastType.Success, "Upload complete", MatIconNames.Cloud_upload);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex, "Display photo failed to upload");
+                    Toaster.Add("Display photo failed to upload. Please try again in a few minuets", MatToastType.Danger, "Upload failed", MatIconNames.Cloud_off);
+                    return false;
+                }
+            });
+        }
+        else
+        {
+            displayTask = Task.FromResult(true);
+        }
+        return (await Task.WhenAll(new List<Task<bool>> { displayTask, verifyTask })).All(taskResults => taskResults);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _client = ClientFactory.CreateClient("ApiClient");
+        }
+        base.OnAfterRender(firstRender);
+    }
+
+}

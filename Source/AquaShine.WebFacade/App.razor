@@ -1,12 +1,32 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
 <MatThemeProvider Theme="@_theme">
+    <MatToastContainer />
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            @* <CascadingAuthenticationState> *@
+            @*<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    <LayoutView Layout="@typeof(ErrorLayoutNoMain)">
+                        <MatH1>Checking your browser....</MatH1>
+                        <MatBody1>This should only take a moment!</MatBody1>
+                    </LayoutView>
+                </Authorizing>
+                <NotAuthorized>
+                    <LayoutView Layout="@typeof(ErrorLayoutNoMain)">
+                        <NotAuthorizedError />
+                    </LayoutView>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            @* </CascadingAuthenticationState> *@
         </Found>
         <NotFound>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p>Sorry, there's nothing at this address.</p>
-            </LayoutView>
+            <AuthorizeRouteView>
+                <LayoutView Layout="@typeof(ErrorLayout)">
+                    <_404Error />
+                </LayoutView>
+            </AuthorizeRouteView>
         </NotFound>
     </Router>
 </MatThemeProvider>
@@ -16,7 +36,8 @@
     readonly MatTheme _theme = new MatTheme
     {
         Primary = "#189f94",
+        //Secondary = "#189f94",
         OnPrimary = "#fff",
-        OnSecondary = "#189f94",
+        //OnSecondary = "##fff",
     };
 }

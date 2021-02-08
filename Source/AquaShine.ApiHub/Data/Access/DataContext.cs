@@ -1,6 +1,7 @@
 ﻿using AquaShine.ApiHub.Data.Models;
 using Azure.Storage;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Cosmos.Table.Queryable;
@@ -16,7 +17,7 @@ namespace AquaShine.ApiHub.Data.Access
     /// <summary>
     /// Wrapper for data operations
     /// </summary>
-    public class DataContext
+    public class TableDataContext : IDataContext
     {
         private readonly CloudStorageAccount _storageAccount;
         private readonly CloudTable _entrantTable;
@@ -26,7 +27,7 @@ namespace AquaShine.ApiHub.Data.Access
         /// </summary>
         /// <param name="account"></param>
         /// <param name="storageAccount"></param>
-        public DataContext(CloudTableClient account, CloudStorageAccount storageAccount)
+        public TableDataContext(CloudTableClient account, CloudStorageAccount storageAccount)
         {
             if (account == null) throw new ArgumentNullException(nameof(account));
             _storageAccount = storageAccount ?? throw new ArgumentNullException(nameof(storageAccount));
@@ -69,10 +70,10 @@ namespace AquaShine.ApiHub.Data.Access
         public async Task<IEnumerable<Entrant>> FetchSubmissionOrderedList(int count, int skip, bool? verified)
         {
             var query = _entrantTable.CreateQuery<Entrant>()
-                .Where(z => z.Details!.Locked);
+                .Where(z => z.Submission!.Locked);
             if (verified.HasValue)
             {
-                query = query.Where(x => x.Details!.Verified == verified.Value);
+                query = query.Where(x => x.Submission!.Verified == verified.Value);
             }
 
             TableQuerySegment<Entrant>? querySegment = null;
@@ -85,7 +86,31 @@ namespace AquaShine.ApiHub.Data.Access
                 returnList.AddRange(querySegment);
             }
 
-            return returnList.OrderBy(o => o.Details!.TimeToComplete).Skip(skip).Take(count);
+            return returnList.OrderBy(o => o.Submission!.TimeToComplete).Skip(skip).Take(count);
+        }
+
+        public async Task<IEnumerable<Entrant>> FetchByNameFilterOrdered(string name, int count, int skip, bool? verified)
+        {
+            var query = _entrantTable.CreateQuery<Entrant>()
+                .Where(z => z.Submission!.Locked);
+            if (verified.HasValue)
+            {
+                query = query.Where(x => x.Submission!.Verified == verified.Value);
+            }
+
+            query = query.Where(x => x.Name.Contains(name));
+
+            TableQuerySegment<Entrant>? querySegment = null;
+            var returnList = new List<Entrant>();
+
+            while (querySegment == null || querySegment.ContinuationToken != null)
+            {
+                querySegment = await query.AsTableQuery()
+                    .ExecuteSegmentedAsync(querySegment?.ContinuationToken).ConfigureAwait(false);
+                returnList.AddRange(querySegment);
+            }
+
+            return returnList.OrderBy(o => o.Submission!.TimeToComplete).Skip(skip).Take(count);
         }
 
         /// <summary>
@@ -101,7 +126,7 @@ namespace AquaShine.ApiHub.Data.Access
 
             if (verified.HasValue)
             {
-                query = query.Where(x => x.Details!.Verified == verified.Value);
+                query = query.Where(x => x.Submission!.Verified == verified.Value);
             }
 
             TableQuerySegment<Entrant>? querySegment = null;
@@ -165,6 +190,42 @@ namespace AquaShine.ApiHub.Data.Access
             return (Entrant)(await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false)).Result;
         }
 
+        /// <inheritdoc />
+        public async Task Delete(Entrant entrant)
+        {
+            if (entrant == null) throw new ArgumentNullException(nameof(entrant));
+            //var operation = TableOperation.Delete(entrant);
+            //await _entrantTable.ExecuteAsync(operation).ConfigureAwait(false);
+            entrant.SoftDelete = true;
+            await MergeWithStore(entrant).ConfigureAwait(false);
+        }
+
+        public async Task<int> GetTotalSubmissions(bool? verified)
+        {
+            var query = _entrantTable.CreateQuery<Entrant>().AsQueryable();
+            if (verified.HasValue)
+            {
+                query = query.Where(x => x.Submission != null && x.Submission.Locked && x.Submission.Verified == verified);
+            }
+            else
+            {
+                query = query.Where(x => x.Submission != null && x.Submission.Locked);
+            }
+
+            TableQuerySegment<Entrant>? querySegment = null;
+            var count = 0;
+
+            while (querySegment == null || querySegment.ContinuationToken != null)
+            {
+                querySegment = await query.AsTableQuery()
+                    .ExecuteSegmentedAsync(querySegment?.ContinuationToken).ConfigureAwait(false);
+
+                count += querySegment.Results.Count;
+            }
+
+            return count;
+        }
+
         /// <summary>
         /// Generates the URIs that a client can use to upload images to the storage system
         /// </summary>
@@ -173,9 +234,17 @@ namespace AquaShine.ApiHub.Data.Access
         /// <param name="verifyContainerName">The name of the blob container for verification images. Default: 'photos-verification'</param>
         /// <param name="displayContainerName">The name of the blob container for verification images. Default: 'photos-display'</param>
         /// <returns></returns>
-        public (Uri verifyUploadUri, Uri? displayUploadUri) GenerateImageUploadUris(string entrantId, bool generateDisplayUri, string verifyContainerName = "photos-verification", string displayContainerName = "photos-display")
+        public async Task<(Uri verifyUploadUri, Uri? displayUploadUri)> GenerateImageUploadUris(string entrantId,
+            bool generateDisplayUri, string verifyContainerName = "photos-verification",
+            string displayContainerName = "photos-display")
         {
             if (string.IsNullOrWhiteSpace(entrantId)) throw new ArgumentNullException(nameof(entrantId));
+
+            //Generate containers
+            var blobClient = new BlobContainerClient(_storageAccount.ToString(true), displayContainerName);
+            await blobClient.CreateIfNotExistsAsync(PublicAccessType.Blob).ConfigureAwait(false);
+            blobClient = new BlobContainerClient(_storageAccount.ToString(true), verifyContainerName);
+            await blobClient.CreateIfNotExistsAsync(PublicAccessType.None).ConfigureAwait(false);
 
             var sasBuilder = new BlobSasBuilder
             {
@@ -186,7 +255,7 @@ namespace AquaShine.ApiHub.Data.Access
             };
 
             //Sets the permissions for the SAS token
-            sasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.Write);
+            sasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.Write | BlobSasPermissions.Delete);
 
             var credentials = new StorageSharedKeyCredential(_storageAccount.Credentials.AccountName,
                 _storageAccount.Credentials.ExportBase64EncodedKey());

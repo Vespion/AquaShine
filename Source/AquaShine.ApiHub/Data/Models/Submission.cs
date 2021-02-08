@@ -38,6 +38,11 @@ namespace AquaShine.ApiHub.Data.Models
         public bool Show { get; set; }
 
         /// <summary>
+        /// The submission has been rejected and cannot be resubmitted, displayed or used for rewards
+        /// </summary>
+        public bool Rejected { get; set; }
+
+        /// <summary>
         /// Use a display name instead of the entrants name
         /// </summary>
         public string? DisplayName { get; set; }

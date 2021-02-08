@@ -78,19 +78,24 @@ namespace AquaShine.ApiHub.Eventbrite
         /// Converts an attendee into an entrant. This method generates a unique ID for the entrant and should only be used once per attendee
         /// </summary>
         /// <param name="attendee"></param>
+        /// <param name="generateId">Should an ID be generated for this entrant</param>
         /// <returns></returns>
-        public Entrant ConvertEntrant(Attendee attendee)
+        public Entrant ConvertEntrant(Attendee attendee, bool generateId = true)
         {
             if (attendee == null) throw new ArgumentNullException(nameof(attendee));
             var entrant = new Entrant
             {
-                RowKey = _idGenerator.NextId("entrantIds").ToString("X", new NumberFormatInfo()),
                 EventbriteId = attendee.Id,
                 Address = attendee.Profile!.Addresses!.Ship!,
                 BioGender = Enum.Parse<Gender>(attendee.Profile.Gender, true),
                 Email = attendee.Profile.Email!,
                 Name = attendee.Profile.Name!,
+                PartitionKey = "A"
             };
+            if (generateId)
+            {
+                entrant.RowKey = _idGenerator.NextId("entrantIds").ToString("X", new NumberFormatInfo());
+            }
             return entrant;
         }
     }

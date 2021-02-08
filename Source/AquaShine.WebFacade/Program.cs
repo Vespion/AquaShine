@@ -1,33 +1,65 @@
+#define AutoDebugFlag
+
+using AquaShine.WebFacade.Helpers;
+using Blazor.Extensions.Logging;
 using BlazorStrap;
+using H3x.BlazorProgressIndicator;
 using MatBlazor;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace AquaShine.WebFacade
 {
     public class Program
     {
+#if DEBUG && AutoDebugFlag
+        public const bool DebugFlag = true;
+#elif !DEBUG && AutoDebugFlag
+        public const bool DebugFlag = false;
+#else
+//Manually set flag
+        public const bool DebugFlag = false;
+#endif
+
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddLoadingBar();
-            builder.Services.AddLogging();
+            builder.Services.AddProgressIndicator();
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddBrowserConsole();
+            if (!DebugFlag)
+            {
+#pragma warning disable CS0162 // Unreachable code detected
+                //TODO Fix this
+                //builder.Logging.AddApplicationInsights("bde3f897-6569-49dc-a7fe-2007d7ff5e5c");
+#pragma warning restore CS0162 // Unreachable code detected
+            }
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
             builder.Services.AddBootstrapCss();
             builder.Services.AddMatToaster();
 
             builder.Services.AddHttpClient("ApiClient", (sp, client) =>
             {
-                client.BaseAddress = new Uri("");
-                client.EnableIntercept(sp);
+                client.BaseAddress = new Uri(DebugFlag ? "http://localhost:7071/api/" : "https://aquashine-apifacade.azurewebsites.net/api/");
             });
 
+            builder.Services.AddSingleton(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("ApiClient"));
+
+            builder.Services.AddScoped<CustomStateProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomStateProvider>();
+            builder.Services.AddOptions();
+            builder.Services.AddAuthorizationCore(options => { });
+
             await builder.Build()
-                .UseLoadingBar()
                 .RunAsync();
         }
     }

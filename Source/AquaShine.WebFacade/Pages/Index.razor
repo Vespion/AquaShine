@@ -1,9 +1,427 @@
 ﻿@page "/"
-
+@using System.IO
 <article>
-    <MatH1>About the race</MatH1>
-    <MatBody2>
-        The shsusac virtual 10k challenge is a physical activity that requires you to travel 10k on foot this could be done in many ways such as running, walking or you could do it in a creative way such as fancy dress and juggling while walking the distance just make sure you are aware of your surroundings, challenge your friends to see who can do it the fastest.
-        Upon completion of the 10k challenge you will receive the lockdown finishers medal; you will be added to the results table where you can see your time and compare them to others, there are prizes for the fastest male, fastest female and the best selfie.
-    </MatBody2>
+    <MatHidden Breakpoint="MatBreakpoint.MD">
+        <ChildContent>
+            <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+                <div class="mat-layout-grid-inner">
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <div class="mat-layout-grid-inner">
+                            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                                <source sizes="(max-width: 1400px) 100vw, 1400px"
+                                        srcset="
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_200.webp 200w,
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_338.webp 338w,
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_436.webp 436w,
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_545.webp 545w,
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_625.webp 625w,
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_717.webp 717w,
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_801.webp 801w,
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_1000.webp 1000w,
+                                            img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_1000.webp"/>
+                                <img sizes="(max-width: 1000px) 100vw, 1000px"
+                                     srcset="
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_200.jpg 200w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_338.jpg 338w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_436.jpg 436w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_545.jpg 545w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_625.jpg 625w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_717.jpg 717w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_801.jpg 801w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_1000.jpg 1000w"
+                                     src="img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_1000.jpg"
+                                     alt="" style="width: 100%"/>
+                            </picture>
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                                <MatH3>Talk to us!</MatH3>
+                                <div class="mat-layout-grid-inner">
+                                    <div class="mat-layout-grid-cell">
+                                        <MatButton Icon="" Link="https://www.facebook.com/shsusac9214/">
+                                            <img src="img/icons/facebook.png" alt="Facebook Icon"/>
+                                            <MatBody1 style="margin-left: 5px; text-align-all: center"> Facebook</MatBody1>
+                                        </MatButton>
+                                    </div>
+                                    <div class="mat-layout-grid-cell">
+                                        <MatButton Link="https://www.hallamstudentsunion.com/organisation/8676/">
+                                            <img src="img/icons/union.png" height="48" alt="Sheffield Hallam Students Union Icon"/>
+                                            <MatBody1 style="margin-left: 5px; text-align-all: center"> Hallam Students Union</MatBody1>
+                                        </MatButton>
+                                    </div>
+                                    <div class="mat-layout-grid-cell">
+                                        <MatButton Link="mailto:information@shusac.org.uk">
+                                            <MatIcon Icon="@MatIconNames.Email" alt="Email Icon"/>
+                                            <MatBody1 style="margin-left: 5px; text-align-all: center"> Email</MatBody1>
+                                        </MatButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                        <div class="mat-layout-grid-inner">
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                                <MatH1>About Us</MatH1>
+                                <MatBody1>
+                                    Who are we? We are Sheffield Hallam student Union Sub Aqua club or SHSUSAC. We take on people completely new to diving every year. The training we give you will take you to the level of BSAC Ocean Diver, a qualification that you can use anywhere in the world to dive up to 20m. At SHSUSAC we are committed to providing SCUBA training at the cheapest possible price, whilst maintaining the highest standards.
+                                </MatBody1>
+                            </div>
+                            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                                <source sizes="(max-width: 1400px) 100vw, 1400px"
+                                        srcset="
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_200.webp 200w,
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_331.webp 331w,
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_432.webp 432w,
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_520.webp 520w,
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_598.webp 598w,
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_667.webp 667w,
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_789.webp 789w,
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_960.webp 960w,
+                                            img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_960.webp"/>
+                                <img sizes="(max-width: 960px) 100vw, 960px"
+                                     srcset="
+                                        img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_200.jpg 200w,
+                                        img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_331.jpg 331w,
+                                        img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_432.jpg 432w,
+                                        img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_520.jpg 520w,
+                                        img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_598.jpg 598w,
+                                        img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_667.jpg 667w,
+                                        img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_789.jpg 789w,
+                                        img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_960.jpg 960w"
+                                     src="img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_960.jpg"
+                                     alt="" style="width: 100%"/>
+                            </picture>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ChildContent>
+        <ElseContent>
+            <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+                <div class="mat-layout-grid-inner">
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                        <source sizes="(max-width: 1400px) 100vw, 1400px"
+                                srcset="
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_200.webp 200w,
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_338.webp 338w,
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_436.webp 436w,
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_545.webp 545w,
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_625.webp 625w,
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_717.webp 717w,
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_801.webp 801w,
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_1000.webp 1000w,
+                                    img/club/pool_party/webp/poolParty_bgqsib_c_scale_w_1000.webp" />
+                        <img sizes="(max-width: 1000px) 100vw, 1000px"
+                             srcset="
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_200.jpg 200w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_338.jpg 338w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_436.jpg 436w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_545.jpg 545w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_625.jpg 625w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_717.jpg 717w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_801.jpg 801w,
+                                        img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_1000.jpg 1000w"
+                             src="img/club/pool_party/jpg/poolParty_bgqsib_c_scale_w_1000.jpg"
+                             alt="" style="width: 100%" />
+                    </picture>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="padding: 10px">
+                        <MatH1>About Us</MatH1>
+                        <MatBody1>
+                            Who are we? we are Sheffield Hallam student Union Sub Aqua club or SHSUSAC. We take on people completely new to diving every year. The training we give you will take you to the level of BSAC Ocean Diver, a qualification that you can use anywhere in the world to dive up to 20m. At SHSUSAC we are committed to providing SCUBA training at the cheapest possible price, whilst maintaining the highest standards. To this day we remain one of the cheapest places to learn SCUBA in the United Kingdom.
+                        </MatBody1>
+                    </div>
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                        <source sizes="(max-width: 1400px) 100vw, 1400px"
+                                srcset="
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_200.webp 200w,
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_331.webp 331w,
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_432.webp 432w,
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_520.webp 520w,
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_598.webp 598w,
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_667.webp 667w,
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_789.webp 789w,
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_960.webp 960w,
+                                    img/club/dive_bell/webp/diveBell_u8nspf_c_scale_w_960.webp"/>
+                        <img sizes="(max-width: 960px) 100vw, 960px"
+                             srcset="
+                                img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_200.jpg 200w,
+                                img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_331.jpg 331w,
+                                img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_432.jpg 432w,
+                                img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_520.jpg 520w,
+                                img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_598.jpg 598w,
+                                img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_667.jpg 667w,
+                                img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_789.jpg 789w,
+                                img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_960.jpg 960w"
+                             src="img/club/dive_bell/jpg/diveBell_u8nspf_c_scale_w_960.jpg"
+                             alt="" style="width: 100%"/>
+                    </picture>
+                    <MatH3>Talk to us!</MatH3>
+                    <div class="mat-layout-grid-inner">
+                        <div class="mat-layout-grid-cell">
+                            <MatButton Link="https://www.facebook.com/shsusac9214/">
+                                <img src="img/icons/facebook.png" />
+                                <MatBody1 style="margin-left: 5px; text-align-all: center"> Facebook</MatBody1>
+                            </MatButton>
+                        </div>
+                        <div class="mat-layout-grid-cell">
+                            <MatButton Link="https://www.hallamstudentsunion.com/organisation/8676/">
+                                <img src="img/icons/union.png" height="48" />
+                                <MatBody1 style="margin-left: 5px; text-align-all: center"> Hallam Students Union</MatBody1>
+                            </MatButton>
+                        </div>
+                        <div class="mat-layout-grid-cell">
+                            <MatButton Link="mailto:information@shusac.org.uk">
+                                <MatIcon Icon="@MatIconNames.Email" />
+                                <MatBody1 style="margin-left: 5px; text-align-all: center"> Email</MatBody1>
+                            </MatButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ElseContent>
+    </MatHidden>
+
+    <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="padding: 10px">
+                <MatH1 style="padding: 10px">About the race</MatH1>
+                <MatBody2 style="padding: 10px">
+                    The Shsusac virtual 10k challenge is a physical activity that requires you to travel 10k on foot this could be done in many ways such as running, walking or you could do it in a creative way such as fancy dress and juggling while walking the distance just make sure you are aware of your surroundings, challenge your friends to see who can do it the fastest.
+                    <hr />
+                    Upon completion of the 10k challenge you will receive the lockdown finishers medal; you will be added to the results table where you can see your time and compare them to others, there are prizes for the fastest male, fastest female and the best selfie.
+                </MatBody2>-->
+                <!-- You can customize this button any way you like -->
+                <MatButton id="eventbrite-widget-modal-trigger-123994935189" type="button">Click here to enter</MatButton>
+
+                <ClientScript type="text/javascript">
+                    <script>
+                        var exampleCallback = function () {
+                            console.log('Order complete!');
+                        };
+
+                        window.EBWidgets.createWidget({
+                            widgetType: 'checkout',
+                            eventId: '123994935189',
+                            modal: true,
+                            modalTriggerElementId: 'eventbrite-widget-modal-trigger-123994935189',
+                            onOrderComplete: exampleCallback
+                        });
+                    </script>
+                </ClientScript>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <div class="mat-layout-grid-inner">
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                        <source sizes="(max-width: 1400px) 100vw, 1400px"
+                            srcset="
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_200.webp 200w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_364.webp 364w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_489.webp 489w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_596.webp 596w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_687.webp 687w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_776.webp 776w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_865.webp 865w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_940.webp 940w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_1017.webp 1017w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_1096.webp 1096w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_1175.webp 1175w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_1255.webp 1255w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_1324.webp 1324w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_1397.webp 1397w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_1400.webp 1400w,
+                                img/race/dsc_4221/webp/DSC_4221_ffehzh_c_scale_w_1400.webp"/>
+                        <img sizes="(max-width: 1400px) 100vw, 1400px"
+                             srcset="
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_200.jpg 200w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_364.jpg 364w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_489.jpg 489w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_596.jpg 596w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_687.jpg 687w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_776.jpg 776w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_865.jpg 865w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_940.jpg 940w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_1017.jpg 1017w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_1096.jpg 1096w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_1175.jpg 1175w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_1255.jpg 1255w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_1324.jpg 1324w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_1397.jpg 1397w,
+                                img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_1400.jpg 1400w"
+                             src="img/race/dsc_4221/jpg/DSC_4221_ffehzh_c_scale_w_1400.jpg"
+                             alt="" style="width: 100%"/>
+                    </picture>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-layout-grid mat-elevation-z6" style="margin: 10px">
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <MatH2 style="padding: 10px">How it works</MatH2>
+            </div>
+            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <source sizes="(max-width: 1400px) 100vw, 1400px" 
+                    srcset="
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_200.webp 200w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_362.webp 362w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_477.webp 477w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_573.webp 573w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_667.webp 667w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_744.webp 744w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_814.webp 814w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_875.webp 875w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_940.webp 940w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1003.webp 1003w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1062.webp 1062w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1118.webp 1118w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1171.webp 1171w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1222.webp 1222w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1279.webp 1279w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1330.webp 1330w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1376.webp 1376w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1398.webp 1398w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1400.webp 1400w,
+                        img/race/dsc_3848/webp/DSC_3848_nl5j7k_c_scale_w_1400.webp"/>
+                <img style="width: 100%"
+                     sizes="(max-width: 1400px) 100vw, 1400px"
+                     srcset="
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_200.jpg 200w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_362.jpg 362w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_477.jpg 477w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_573.jpg 573w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_667.jpg 667w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_744.jpg 744w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_814.jpg 814w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_875.jpg 875w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_940.jpg 940w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1003.jpg 1003w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1062.jpg 1062w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1118.jpg 1118w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1171.jpg 1171w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1222.jpg 1222w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1279.jpg 1279w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1330.jpg 1330w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1376.jpg 1376w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1398.jpg 1398w,
+                        img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1400.jpg 1400w"
+                     src="img/race/dsc_3848/jpg/DSC_3848_nl5j7k_c_scale_w_1400.jpg"
+                     alt="">
+            </picture>
+            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <source sizes="(max-width: 1400px) 100vw, 1400px" 
+                    srcset="
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_200.webp 200w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_352.webp 352w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_465.webp 465w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_561.webp 561w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_651.webp 651w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_727.webp 727w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_798.webp 798w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_867.webp 867w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_932.webp 932w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1006.webp 1006w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1065.webp 1065w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1122.webp 1122w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1178.webp 1178w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1238.webp 1238w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1297.webp 1297w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1359.webp 1359w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1399.webp 1399w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1400.webp 1400w,
+                        img/race/dsc_3880/webp/DSC_3880_ogwl28_c_scale_w_1400.webp"/>
+                <img sizes="(max-width: 1400px) 100vw, 1400px"
+                     srcset="
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_200.jpg 200w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_352.jpg 352w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_465.jpg 465w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_561.jpg 561w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_651.jpg 651w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_727.jpg 727w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_798.jpg 798w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_867.jpg 867w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_932.jpg 932w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1006.jpg 1006w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1065.jpg 1065w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1122.jpg 1122w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1178.jpg 1178w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1238.jpg 1238w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1297.jpg 1297w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1359.jpg 1359w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1399.jpg 1399w,
+                        img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1400.jpg 1400w"
+                     src="img/race/dsc_3880/jpg/DSC_3880_ogwl28_c_scale_w_1400.jpg"
+                     alt="" style="width: 100%"/>
+            </picture>
+            <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <source sizes="(max-width: 1400px) 100vw, 1400px"
+                        srcset="
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_200.webp 200w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_364.webp 364w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_483.webp 483w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_591.webp 591w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_670.webp 670w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_748.webp 748w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_818.webp 818w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_890.webp 890w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_958.webp 958w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1015.webp 1015w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1074.webp 1074w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1133.webp 1133w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1188.webp 1188w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1243.webp 1243w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1294.webp 1294w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1345.webp 1345w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1399.webp 1399w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1396.webp 1396w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1400.webp 1400w,
+                            img/race/dsc_4153/webp/DSC_4153_umptif_c_scale_w_1400.webp"/>
+                <img sizes="(max-width: 1400px) 100vw, 1400px"
+                     srcset="
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_200.jpg 200w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_364.jpg 364w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_483.jpg 483w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_591.jpg 591w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_670.jpg 670w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_748.jpg 748w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_818.jpg 818w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_890.jpg 890w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_958.jpg 958w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1015.jpg 1015w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1074.jpg 1074w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1133.jpg 1133w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1188.jpg 1188w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1243.jpg 1243w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1294.jpg 1294w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1345.jpg 1345w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1399.jpg 1399w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1396.jpg 1396w,
+                        img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1400.jpg 1400w"
+                     src="img/race/dsc_4153/jpg/DSC_4153_umptif_c_scale_w_1400.jpg"
+                     alt="" style="width: 100%"/>
+            </picture>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <MatBody2 style="padding: 10px">
+                    To time yourself you will need evidence that you have done the distance and time of completion, we recommend that you use Strava however if you have a smart watch that tracks your distance and records you such as Garmin upload your 10k to the results table and we can verify that it is official with no cheating allowed.
+                    You can download Strava here <MatAnchorLink href="https://www.strava.com/">https://www.strava.com/</MatAnchorLink>
+                    Share how you did and images on Facebook
+                </MatBody2>
+                <div class="mat-layout-grid-inner">
+                    <picture class="mat-elevation-z6 mat-layout-grid-cell mat-layout-grid-cell-span-3">
+                        <source sizes="(max-width: 539px) 100vw, 539px"
+                            srcset="
+                                img/howitworks/strava_desktop/webp/Picture1_bpzjuo_c_scale_w_200.webp 200w,
+                                img/howitworks/strava_desktop/webp/Picture1_bpzjuo_c_scale_w_403.webp 403w,
+                                img/howitworks/strava_desktop/webp/Picture1_bpzjuo_c_scale_w_539.webp 539w"/>
+                        <img sizes="(max-width: 539px) 100vw, 539px"
+                             srcset="
+                                img/howitworks/strava_desktop/jpg/Picture1_bpzjuo_c_scale_w_200.jpg 200w,
+                                img/howitworks/strava_desktop/jpg/Picture1_bpzjuo_c_scale_w_403.jpg 403w,
+                                img/howitworks/strava_desktop/jpg/Picture1_bpzjuo_c_scale_w_539.jpg 539w"
+                             src="img/howitworks/strava_desktop/jpg/Picture1_bpzjuo_c_scale_w_539.jpg"
+                             alt="" style="width: 100%"/>
+                    </picture>
+                </div>
+            </div>
+        </div>
+    </div>
 </article>

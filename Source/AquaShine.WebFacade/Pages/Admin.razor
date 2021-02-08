@@ -1,0 +1,76 @@
+﻿@*
+@using AquaShine.WebFacade.Helpers
+@using AquaShine.WebFacade.Pages.AdminPages
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject IHttpClientFactory Factory
+@inject CustomStateProvider StateProvider
+
+<article>
+    <style>
+        .signin--absolute {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            padding: 10px;
+        }
+    </style>
+    <MatHidden Breakpoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up">
+        <ChildContent>
+            <MatH1>Admin</MatH1>
+        </ChildContent>
+        <ElseContent>
+            <MatH1>Administration</MatH1>
+        </ElseContent>
+    </MatHidden>
+    <MatBody1>Hey there! This page is for SHSUSAC administration only.</MatBody1>
+    <MatBody1>Why don't you checkout our lovely selection of links in the menu to your left?</MatBody1>
+    <MatDivider />-->
+    <AuthorizeView> 
+         <Authorized> 
+    <!--<MatBody1>Administration Mode active!</MatBody1>
+    <MatBody2>Please ensure you fully understand the consequences of any actions before you perform them.</MatBody2>
+    <MatBody2>
+        Should probably put additional documentation in here at some point
+        - Vesp
+    </MatBody2>-->
+             <div class="mat-elevation-z16 signin--absolute"> 
+                 <MatH4>Sign out</MatH4> 
+                 <MatBody2>Sign out of administration mode</MatBody2> 
+                 <MatButton OnClick="SignoutClicked"><MatBody2 Style="text-align: center">Sign out</MatBody2></MatButton> 
+             </div> 
+         </Authorized> 
+         <NotAuthorized> 
+             <div class="mat-elevation-z16 signin--absolute"> 
+                 <MatH4>Sign in</MatH4> 
+                 <MatBody2>If you are an administrator enter your authentication key below</MatBody2> 
+                 <MatTextField Outlined="true" FullWidth="true" Label="Authentication Key" @bind-Value="@_authKeyEntryValue" /> 
+                 <MatButton OnClick="SigninClicked"><MatBody2 Style="text-align: center">Sign in</MatBody2></MatButton> 
+             </div> 
+         </NotAuthorized> 
+     </AuthorizeView> 
+<!--</article>
+@code {
+
+    private HttpClient _apiClient = null!;
+    private string _authKeyEntryValue = "";
+
+    protected override void OnInitialized()
+    {
+        _apiClient = Factory.CreateClient("ApiClient");
+        base.OnInitialized();
+    }
+
+    private void SigninClicked()
+    {
+        StateProvider.Login(_authKeyEntryValue);
+        _authKeyEntryValue = "";
+    }
+
+    private void SignoutClicked()
+    {
+        StateProvider.Logout();
+        _authKeyEntryValue = "";
+    }
+
+}-->*@
